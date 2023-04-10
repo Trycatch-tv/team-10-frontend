@@ -1,8 +1,0 @@
-{
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "prettier.singleQuote": true,
-  "prettier.printWidth": 70,
-  "prettier.trailingComma": "es5",
-  "prettier.semi": false
-}
