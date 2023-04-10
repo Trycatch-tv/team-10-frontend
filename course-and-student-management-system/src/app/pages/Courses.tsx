@@ -2,7 +2,7 @@ import CoursesList from '../components/CoursesList';
 
 const studentsArray1: NumberOfStudents[] = [
   {
-    name: 'Estudiante 1-1',
+    name: 'Pepe Perez',
     cedula: '1111111111',
     email: 'estudiante1-1@example.com',
     phone: '111-111-1111',
@@ -36,7 +36,7 @@ const studentsArray1: NumberOfStudents[] = [
 // Array 2
 const studentsArray2: NumberOfStudents[] = [
   {
-    name: 'Estudiante 2-1',
+    name: 'Chaguendo Rivales',
     cedula: '6666666666',
     email: 'estudiante2-1@example.com',
     phone: '666-666-6666',

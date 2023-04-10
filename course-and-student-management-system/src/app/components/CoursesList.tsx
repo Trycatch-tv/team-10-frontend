@@ -33,12 +33,19 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
 
   const filteredCourses = courses.filter((course) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
+    const filteredStudents = course.number_of_students.filter((student) =>
+      student.name.toLowerCase().includes(lowerSearchTerm) ||
+      student.cedula.toLowerCase().includes(lowerSearchTerm) ||
+      student.email.toLowerCase().includes(lowerSearchTerm) ||
+      student.phone.toLowerCase().includes(lowerSearchTerm)
+    );
     return (
       course.name.toLowerCase().includes(lowerSearchTerm) ||
       course.description.toLowerCase().includes(lowerSearchTerm) ||
       course.startDate.toLowerCase().includes(lowerSearchTerm) ||
       course.endDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.professor.toLowerCase().includes(lowerSearchTerm)
+      course.professor.toLowerCase().includes(lowerSearchTerm) ||
+      filteredStudents.length > 0
     );
   });
 
