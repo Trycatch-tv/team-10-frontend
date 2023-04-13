@@ -2,24 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import courses from '../api/hello/route';
+import { getCourseById } from '../api/services/courses.service';
+import { Course } from "@/app/model/Course.model";
 
-type NumberOfStudents = {
-  name: string;
-  cedula: string;
-  email: string;
-  phone: string;
-};
-
-type Course = {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
-};
 
 interface ChildProps {
   openModalDetailView: boolean;
@@ -29,12 +14,10 @@ interface ChildProps {
 }
 
 export default function CourseModalDetail({ openModalDetailView, onChange, setOpenModalDetailView, viewCourseModal }: ChildProps) {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course>();
 
   useEffect(() => {
-    const filtered = courses.filter((course) => {
-      return course.id === viewCourseModal;
-    });
+    const filtered = getCourseById(viewCourseModal!)
     setFilteredCourses(filtered);
   }, []);
 
@@ -80,20 +63,20 @@ export default function CourseModalDetail({ openModalDetailView, onChange, setOp
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       <div className="flex justify-between">
-                        <h2 className="text-lg font-medium mb-2">{filteredCourses[0]?.name}</h2>
+                        <h2 className="text-lg font-medium mb-2">{filteredCourses?.name}</h2>
                       </div>
                       <div className="py-1 border-t border-gray-300"></div>
-                      <p className="text-gray-600 mb-2">{filteredCourses[0]?.description}</p>
-                      <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {filteredCourses[0]?.startDate}</p>
-                      <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {filteredCourses[0]?.endDate}</p>
-                      <p className="text-sm text-gray-500">Profesor: {filteredCourses[0]?.professor}</p>
-                      <p className="text-sm text-gray-500 mb-6">Numero de estudiantes: {filteredCourses[0]?.number_of_students.length}</p>
+                      <p className="text-gray-600 mb-2">{filteredCourses?.description}</p>
+                      <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {filteredCourses?.startDate}</p>
+                      <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {filteredCourses?.endDate}</p>
+                      <p className="text-sm text-gray-500">Profesor: {filteredCourses?.professor}</p>
+                      <p className="text-sm text-gray-500 mb-6">Numero de estudiantes: {filteredCourses?.number_of_students.length}</p>
                       <div className="py-1 border-t border-gray-300"></div>
                       <p className="font-semibold text-gray-900 m-4">Estudiantes</p>
                       <div className="py-1 border-t border-gray-300"></div>
-                      {filteredCourses[0]?.number_of_students.length !== 0 && (
+                      {filteredCourses?.number_of_students.length !== 0 && (
                         <>
-                          {filteredCourses[0]?.number_of_students.map((student) => (
+                          {filteredCourses?.number_of_students.map((student) => (
                             <div key={student.cedula}>
                               <div className="relative mt-8 flex items-center gap-x-4">
                                 <img

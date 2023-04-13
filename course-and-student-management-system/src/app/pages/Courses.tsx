@@ -1,7 +1,9 @@
 import CoursesList from '../components/CoursesList';
-import courses from '../api/hello/route'
+
+import { getCourses } from '../api/services/courses.service';
 
 const Courses: React.FC = () => {
+  const courses = getCourses();
   return (
     <div className="p-4 bg-gray-200">
       <h2 className="text-xl font-bold mb-4 gap-4 flex justify-center items-center">Cursos disponibles</h2>

@@ -2,22 +2,7 @@
 import { useState, useEffect } from 'react';
 import CourseOptions from './CourseOptions';
 
-type NumberOfStudents = {
-  name: string;
-  cedula: string;
-  email: string;
-  phone: string;
-};
-
-type Course = {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
-};
+import { Course } from '../model/Course.model';
 
 type Props = {
   courses: Course[];

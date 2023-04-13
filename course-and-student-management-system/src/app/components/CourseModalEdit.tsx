@@ -2,24 +2,8 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import courses from '../api/hello/route';
-
-type NumberOfStudents = {
-  name: string;
-  cedula: string;
-  email: string;
-  phone: string;
-};
-
-type Course = {
-  id: number;   
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
-};
+import { Course } from '../model/Course.model';
+import { updateCourse } from '../api/services/courses.service';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -29,23 +13,16 @@ interface ChildProps {
 }
 
 export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
   const [formDataCourse, setFormDataCourse] = useState({
+    id: viewCourseModal!,
     name: '',
     description: '',
     startDate: '',
     endDate: '',
     professor: '',
-    numberOfStudents: '',
+    number_of_students: [],
   });
-
-  useEffect(() => {
-    const filtered = courses.filter((course) => {
-      return course.id === viewCourseModal;
-    });
-    setFilteredCourses(filtered);
-  }, []);
 
   const cancelButtonRef = useRef(null);
 
@@ -55,8 +32,8 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
   };
 
   const handleSubmit = () => {
-    setOpenModalEditView(false); 
-    console.log(formDataCourse);
+    updateCourse( viewCourseModal!, formDataCourse )
+    setOpenModalEditView(false);
   };
 
   return (
@@ -105,7 +82,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                   value={formDataCourse.name}
                                   onChange={handleChange}
-                               />
+                                />
                               </div>
                             </div>
                           </div>
@@ -127,7 +104,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                           </div>
 
                           <div className="sm:col-span-4">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="startDate" className="block text-sm font-medium leading-6 text-gray-900">
                               Fecha inicio
                             </label>
                             <div className="mt-2">
@@ -139,6 +116,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   autoComplete="startDate"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                   value={formDataCourse.startDate}
+                                  min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
                                   onChange={handleChange}
                                 />
                               </div>
@@ -146,8 +124,8 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                           </div>
 
                           <div className="sm:col-span-4">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Fecha finalizacion
+                            <label htmlFor="endDate" className="block text-sm font-medium leading-6 text-gray-900">
+                              Fecha finalización
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -158,6 +136,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   autoComplete="endDate"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                   value={formDataCourse.endDate}
+                                  min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
                                   onChange={handleChange}
                                 />
                               </div>
