@@ -65,14 +65,11 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
           <div key={course.id} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">
             <div className="flex justify-between">
               <h2 className="text-lg font-medium mb-2">{course.name}</h2>
-              <CourseOptions />
+              <CourseOptions viewCourseModal={course.id} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>
-            <p className="text-gray-600 mb-2">{course.description}</p>
             <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {course.startDate}</p>
             <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {course.endDate}</p>
-            <p className="text-sm text-gray-500">Profesor: {course.professor}</p>
-            <p className="text-sm text-gray-500">Numero de estudiantes: {course.number_of_students.length}</p>
           </div>
         ))}
       </div>
