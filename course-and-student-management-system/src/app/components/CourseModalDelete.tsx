@@ -1,25 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-
-import courses from '../api/hello/route';
-
-type NumberOfStudents = {
-  name: string;
-  cedula: string;
-  email: string;
-  phone: string;
-};
-
-type Course = {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
-};
+import { deleteCourse } from '../api/services/courses.service';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -29,16 +11,13 @@ interface ChildProps {
 }
 
 export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
-
-  useEffect(() => {
-    const filtered = courses.filter((course) => {
-      return course.id === viewCourseModal;
-    });
-    setFilteredCourses(filtered);
-  }, []);
 
   const cancelButtonRef = useRef(null);
+
+  const handleDeleteCourses = () => {
+    deleteCourse(viewCourseModal!);
+    setOpenModalEditView(false);
+  };
 
   return (
     <Transition.Root show={openModalEditView} as={Fragment}>
@@ -78,7 +57,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpenModalEditView(false)}
+                    onClick={handleDeleteCourses}
                   >
                     Eliminar
                   </button>
