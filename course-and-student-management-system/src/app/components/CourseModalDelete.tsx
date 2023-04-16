@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { deleteCourse } from '../api/services/courses.service';
@@ -10,7 +10,7 @@ interface ChildProps {
   viewCourseModal?: number;
 }
 
-export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
+export default function CourseModalDelete({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
 
   const cancelButtonRef = useRef(null);
 
