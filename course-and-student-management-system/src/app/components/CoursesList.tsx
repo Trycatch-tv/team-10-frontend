@@ -1,22 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
+import CourseOptions from './CourseOptions';
 
-type NumberOfStudents = {
-  name: string;
-  cedula: string;
-  email: string;
-  phone: string;
-};
-
-type Course = {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
-};
+import { Course } from '../model/Course.model';
+import CourseModalEdit from './CourseModalEdit';
 
 type Props = {
   courses: Course[];
@@ -24,6 +11,11 @@ type Props = {
 
 const CoursesList: React.FC<Props> = ({ courses }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [openModalEditView, setOpenModalEditView] = useState(false);
+
+  const handleChangeModalEditView = () => {
+    setOpenModalEditView(!openModalEditView);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -33,11 +25,12 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
 
   const filteredCourses = courses.filter((course) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
-    const filteredStudents = course.number_of_students.filter((student) =>
-      student.name.toLowerCase().includes(lowerSearchTerm) ||
-      student.cedula.toLowerCase().includes(lowerSearchTerm) ||
-      student.email.toLowerCase().includes(lowerSearchTerm) ||
-      student.phone.toLowerCase().includes(lowerSearchTerm)
+    const filteredStudents = course.number_of_students.filter(
+      (student) =>
+        student.name.toLowerCase().includes(lowerSearchTerm) ||
+        student.cedula.toLowerCase().includes(lowerSearchTerm) ||
+        student.email.toLowerCase().includes(lowerSearchTerm) ||
+        student.phone.toLowerCase().includes(lowerSearchTerm)
     );
     return (
       course.name.toLowerCase().includes(lowerSearchTerm) ||
@@ -51,22 +44,35 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Buscar cursos..."
-        className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      <div className="container flex items-center p-5">
+        <input
+          type="text"
+          placeholder="Buscar cursos..."
+          className="flex items-center justify-center sm:justify-start mr-4 p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 m-2 ml-14"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button
+          onClick={handleChangeModalEditView}
+          className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
+          role="menuitem"
+          tabIndex={-1}
+          id="menu-item-1"
+        >
+          Crear nuevo
+        </button>
+      </div>
+      <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView}></CourseModalEdit>
       <div className="flex flex-wrap justify-center items-center">
         {filteredCourses.map((course) => (
-          <div key={course.id} className="shadow-md rounded-md p-6 mb-4 md:w-1/2 lg:w-1/3">
-            <h2 className="text-lg font-medium mb-2">{course.name}</h2>
-            <p className="text-gray-600 mb-2">{course.description}</p>
+          <div key={course.id} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">
+            <div className="flex justify-between">
+              <h2 className="text-lg font-medium mb-2">{course.name}</h2>
+              <CourseOptions viewCourseModal={course.id} />
+            </div>
+            <div className="py-1 border-t border-gray-300"></div>
             <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {course.startDate}</p>
             <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {course.endDate}</p>
-            <p className="text-sm text-gray-500">Profesor: {course.professor}</p>
-            <p className="text-sm text-gray-500">Numero de estudiantes: {course.number_of_students.length}</p>
           </div>
         ))}
       </div>
