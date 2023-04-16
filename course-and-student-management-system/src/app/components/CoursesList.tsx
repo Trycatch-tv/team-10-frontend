@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import CourseOptions from './CourseOptions';
 
 import { Course } from '../model/Course.model';
+import CourseModalEdit from './CourseModalEdit';
 
 type Props = {
   courses: Course[];
@@ -10,6 +11,11 @@ type Props = {
 
 const CoursesList: React.FC<Props> = ({ courses }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [openModalEditView, setOpenModalEditView] = useState(false);
+
+  const handleChangeModalEditView = () => {
+    setOpenModalEditView(!openModalEditView);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -38,13 +44,25 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Buscar cursos..."
-        className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 m-2 ml-14"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      <div className="container flex items-center p-5">
+        <input
+          type="text"
+          placeholder="Buscar cursos..."
+          className="flex items-center justify-center sm:justify-start mr-4 p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 m-2 ml-14"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button
+          onClick={handleChangeModalEditView}
+          className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
+          role="menuitem"
+          tabIndex={-1}
+          id="menu-item-1"
+        >
+          Crear nuevo
+        </button>
+      </div>
+      <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView}></CourseModalEdit>
       <div className="flex flex-wrap justify-center items-center">
         {filteredCourses.map((course) => (
           <div key={course.id} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">

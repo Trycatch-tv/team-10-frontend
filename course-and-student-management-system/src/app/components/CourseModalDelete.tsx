@@ -10,7 +10,7 @@ interface ChildProps {
   viewCourseModal?: number;
 }
 
-export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
+export default function CourseModalDelete({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
 
   const cancelButtonRef = useRef(null);
 

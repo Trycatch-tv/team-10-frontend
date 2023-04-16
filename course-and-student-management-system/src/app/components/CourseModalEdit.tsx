@@ -2,8 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { Course } from '../model/Course.model';
-import { updateCourse } from '../api/services/courses.service';
+import { createCourse, updateCourse } from '../api/services/courses.service';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -32,7 +31,11 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
   };
 
   const handleSubmit = () => {
-    updateCourse( viewCourseModal!, formDataCourse )
+    if(viewCourseModal){
+      updateCourse( viewCourseModal!, formDataCourse )
+    }else{
+      createCourse(formDataCourse)
+    }
     setOpenModalEditView(false);
   };
 
