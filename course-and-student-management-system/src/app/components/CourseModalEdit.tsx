@@ -2,7 +2,8 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createCourse, updateCourse } from '../api/services/courses.service';
+import { createCourse, getCourseById, updateCourse } from '../api/services/courses.service';
+import { NumberOfStudents } from '../model/NumberOfStudents';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -20,8 +21,13 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
     startDate: '',
     endDate: '',
     professor: '',
-    number_of_students: [],
+    number_of_students: [] as NumberOfStudents[],
   });
+
+  useEffect(() => {
+    const courseData = getCourseById(viewCourseModal!);
+    setFormDataCourse(courseData!);
+  }, []);
 
   const cancelButtonRef = useRef(null);
 
@@ -83,7 +89,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   id="name"
                                   autoComplete="name"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse.name}
+                                  value={formDataCourse && formDataCourse.name}
                                   onChange={handleChange}
                                 />
                               </div>
@@ -100,7 +106,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                 name="description"
                                 rows={3}
                                 className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                value={formDataCourse.description}
+                                value={formDataCourse && formDataCourse.description}
                                 onChange={handleChange}
                               />
                             </div>
@@ -118,7 +124,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   id="startDate"
                                   autoComplete="startDate"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse.startDate}
+                                  value={formDataCourse && formDataCourse.startDate}
                                   min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
                                   onChange={handleChange}
                                 />
@@ -138,7 +144,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   id="endDate"
                                   autoComplete="endDate"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse.endDate}
+                                  value={formDataCourse && formDataCourse.endDate}
                                   min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
                                   onChange={handleChange}
                                 />
@@ -158,7 +164,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   id="professor"
                                   autoComplete="professor"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse.professor}
+                                  value={formDataCourse && formDataCourse.professor}
                                   onChange={handleChange}
                                 />
                               </div>
