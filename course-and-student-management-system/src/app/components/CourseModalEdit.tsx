@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { createCourse, getCourseById, updateCourse } from '../api/services/courses.service';
-import { NumberOfStudents } from '../model/NumberOfStudents';
+import { NumberOfStudents } from '../model/Students.model';
 
 interface ChildProps {
   openModalEditView: boolean;

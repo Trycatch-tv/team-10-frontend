@@ -1,4 +1,4 @@
-export type NumberOfStudents = {
+export type Students = {
     name: string;
     cedula: string;
     email: string;

@@ -1,4 +1,4 @@
-import { NumberOfStudents } from "./NumberOfStudents";
+import { NumberOfStudents } from "./Students.model";
 
 export type Course = {
     id: number;
