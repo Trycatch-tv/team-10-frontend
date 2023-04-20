@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import CoursesList from '../../components/CoursesList';
 
-import { getCourses } from '../../api/services/courses.service';
+import { getCourses } from '../../api/services/Courses.service';
 import { Course } from '../../model/Course.model';
 
 const Courses: React.FC = () => {
