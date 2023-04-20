@@ -1,4 +1,4 @@
-type NumberOfStudents = {
+type Students = {
   name: string;
   cedula: string;
   email: string;
@@ -12,11 +12,11 @@ type Course = {
   startDate: string;
   endDate: string;
   professor: string;
-  number_of_students: NumberOfStudents[]; // Nueva propiedad para el número de estudiantes
+  number_of_students: Students[]; // Nueva propiedad para el número de estudiantes
 };
 
 
-const studentsArray1: NumberOfStudents[] = [
+export const studentsArray1: Students[] = [
   {
     name: 'Pepe Perez',
     cedula: '1111111111',
@@ -50,7 +50,7 @@ const studentsArray1: NumberOfStudents[] = [
 ];
 
 // Array 2
-const studentsArray2: NumberOfStudents[] = [
+export const studentsArray2: Students[] = [
   {
     name: 'Chaguendo Rivales',
     cedula: '6666666666',
@@ -83,7 +83,7 @@ const studentsArray2: NumberOfStudents[] = [
   },
 ];
 
-const courses: Course[] = [
+export const courses: Course[] = [
   {
     id: 1,
     name: 'Curso 1-1',
@@ -121,5 +121,3 @@ const courses: Course[] = [
     number_of_students: studentsArray2,
   },
 ];
-
-export default courses;
