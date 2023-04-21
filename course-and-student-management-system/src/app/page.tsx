@@ -1,16 +1,13 @@
-import Layout from "./pages/layout";
-import RootLayout from "./layout";
-import Courses from "./pages/Courses/page";
+import Home from './pages/Home/page';
+import Layout from './pages/layout';
 
 export default function MyApp() {
 
   return (
     <>
-      <RootLayout>
-        <Layout>
-          <Courses></Courses>
-        </Layout>
-      </RootLayout>
+      <Layout>
+        <Home></Home>
+      </Layout>
     </>
   );
 }
