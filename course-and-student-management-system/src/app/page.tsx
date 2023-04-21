@@ -1,8 +1,6 @@
 import Layout from './cursos/layout';
 import RootLayout from './layout';
-import Courses from './pages/Courses';
 import NextLink from 'next/link';
-import Image from 'next/image';
 export default function MyApp() {
   return (
     <>
