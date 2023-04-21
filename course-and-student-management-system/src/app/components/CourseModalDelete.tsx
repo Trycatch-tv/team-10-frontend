@@ -1,7 +1,7 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { deleteCourse } from '../api/services/courses.service';
+import { deleteCourse } from '../api/services/Courses.service';
 
 interface ChildProps {
   openModalEditView: boolean;
