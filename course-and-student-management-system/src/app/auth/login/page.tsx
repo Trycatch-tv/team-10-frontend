@@ -1,21 +1,27 @@
 'use client';
+
 import React, { useState } from 'react';
 import NextLink from 'next/link';
+import { AuthLogin } from '@/app/api/services/Auth.service';
 
 interface FormData {
   email: '';
   password: '';
 }
+
 const LoginPage = () => {
   const [inputValues, setInputValues] = useState<FormData>({
     email: '',
     password: '',
   });
+
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    AuthLogin(inputValues);
     console.log(inputValues);
   };
 
@@ -48,8 +54,8 @@ const LoginPage = () => {
             <label htmlFor="input-contraseña">Contraseña:</label>
             <input
               id="input-contraseña"
-              placeholder="correo@gmail.com"
-              type="text"
+              placeholder="password"
+              type="password"
               className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black"
               value={inputValues.password}
               name="password"
