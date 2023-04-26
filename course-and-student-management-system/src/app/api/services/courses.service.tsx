@@ -1,5 +1,5 @@
-import courses from "../hello/route";
-import { Course } from "@/app/model/Course.model";
+import courses from '../hello/route';
+import { Course } from '@/app/model/Course.model';
 
 export const getCourses = (): Course[] => {
   return courses;
