@@ -6,7 +6,6 @@ interface FormData {
   email: '';
   password: '';
 }
-
 const LoginPage = () => {
   const [inputValues, setInputValues] = useState<FormData>({
     email: '',
@@ -19,12 +18,13 @@ const LoginPage = () => {
     e.preventDefault();
     console.log(inputValues);
   };
+
   return (
     <div className="flex h-screen">
       <img
         src="https://images.pexels.com/photos/207569/pexels-photo-207569.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         alt="student-image"
-        className="aspect-auto w-3/5 h-screen hidden sm:block"
+        className="aspect-auto w-3/5 h-screen hidden sm:block min-w-3/5"
       />
       <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full">
         <h1 className="text-black">Logo</h1>
