@@ -5,8 +5,8 @@ import NextLink from 'next/link';
 import { AuthLogin } from '@/app/services/Auth.service';
 
 interface FormData {
-  email: '';
-  password: '';
+  email: string;
+  password: string;
 }
 
 const LoginPage = () => {
@@ -14,7 +14,9 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
-
+  const [errors, setErrors] = useState<{ email: string }>({
+    email: 'No es un correo valido.',
+  });
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
@@ -34,10 +36,7 @@ const LoginPage = () => {
       />
       <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full">
         <h1 className="text-black">Logo</h1>
-        <form
-          className="flex flex-col justify-start text-black gap-6 w-1/2 my-5"
-          onSubmit={(e) => handleSubmit(e)}
-        >
+        <form className="flex flex-col justify-start text-black gap-6 w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col">
             <label htmlFor="input-correo">Correo:</label>
             <input
@@ -49,6 +48,11 @@ const LoginPage = () => {
               name="email"
               onChange={(e) => handleChangeValues(e)}
             />
+            {errors.email && (
+              <label htmlFor="input-correo" className="text-red-600 text-xs ml-2">
+                {errors.email}:
+              </label>
+            )}
           </div>
           <div className="flex flex-col">
             <label htmlFor="input-contraseña">Contraseña:</label>
@@ -62,19 +66,13 @@ const LoginPage = () => {
               onChange={(e) => handleChangeValues(e)}
             />
           </div>
-          <button
-            className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end"
-            type="submit"
-          >
+          <button className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end" type="submit">
             Inicia sesion
           </button>
         </form>
         <hr className=" border-1 w-1/2 border-black rounded-full"></hr>
         <h3 className="text-black text-3xl">O</h3>
-        <NextLink
-          className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-2"
-          href="/auth/register"
-        >
+        <NextLink className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-2" href="/auth/register">
           Registrate
         </NextLink>
       </div>
