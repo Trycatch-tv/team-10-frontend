@@ -1,22 +1,18 @@
 'use client';
-import { useEffect, useState } from 'react';
 
-import { getUserById } from '../../api/services/User.service';
-import { User } from '../../model/User.model';
-import HomeModalEdit from '@/app/components/HomeModalEdit';
+import { useContext, useEffect } from 'react';
+import NextLink from 'next/link';
+import { UserContext } from '@/app/hooks/UserContex';
+import { useRouter } from 'next/navigation';
 
 const Home: React.FC = () => {
-  const [students, setStudents] = useState<User>();
-
-  const [openModalEditView, setOpenModalEditView] = useState(false);
-
-  const handleChangeModalEditView = () => {
-    setOpenModalEditView(!openModalEditView);
-  };
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    const studentsData = getUserById(1);
-    setStudents(studentsData!);
+    if (!user.isAuthenticated) {
+      router.push('/auth/login');
+    }
   }, []);
 
   return (

@@ -35,11 +35,11 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
     //     student?.phone.toLowerCase().includes(lowerSearchTerm)
     // );
     return (
-      course.title.toLowerCase().includes(lowerSearchTerm) ||
+      // course.title.toLowerCase().includes(lowerSearchTerm) ||
       course.description.toLowerCase().includes(lowerSearchTerm) ||
       course.startDate.toLowerCase().includes(lowerSearchTerm) ||
       course.endDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.tutor.toLowerCase().includes(lowerSearchTerm)
+      course.tutor!.toLowerCase().includes(lowerSearchTerm)
       // ||filteredStudents.length > 0
     );
   });
@@ -82,8 +82,8 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
             className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3"
           >
             <div className="flex justify-between">
-              <h2 className="text-lg font-medium mb-2">{course.name}</h2>
-              <CourseOptions viewCourseModal={course.id} />
+              <h2 className="text-lg font-medium mb-2">{course.title}</h2>
+              <CourseOptions viewCourseModal={course.id} role={role} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>
             <p className="text-sm text-gray-500 mb-2">

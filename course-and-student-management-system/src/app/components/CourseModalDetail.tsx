@@ -2,13 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { getCourseById } from '../api/services/Courses.service';
+// import { getCourseById } from '../services/courses.service';
 import { Course } from "@/app/model/Course.model";
-
-=======
-import { getCourseById } from '../api/services/courses.service';
-import { Course } from '@/app/model/Course.model';
->>>>>>> a04c119022ffc40c18d97629efc36a1c8d13ff1d
 
 interface ChildProps {
   openModalDetailView: boolean;
@@ -26,8 +21,8 @@ export default function CourseModalDetail({
   const [filteredCourses, setFilteredCourses] = useState<Course>();
 
   useEffect(() => {
-    const filtered = getCourseById(viewCourseModal!);
-    setFilteredCourses(filtered);
+    // const filtered = getCourseById(viewCourseModal!);
+    // setFilteredCourses(filtered);
   }, []);
 
   return (
