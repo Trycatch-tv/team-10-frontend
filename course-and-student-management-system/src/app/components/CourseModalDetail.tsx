@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-<<<<<<< HEAD
 import { getCourseById } from '../api/services/Courses.service';
 import { Course } from "@/app/model/Course.model";
 

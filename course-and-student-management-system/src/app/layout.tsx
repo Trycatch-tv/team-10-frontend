@@ -1,5 +1,5 @@
-import Header from './components/Header';
 import './globals.css';
+import AppStateProvider from './hooks/UserState';
 
 export const metadata = {
   title: 'Create Next App',
@@ -10,9 +10,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <body>
-        <Header />
-        {children}
-      </body>   
+        <AppStateProvider>
+          {children}
+        </AppStateProvider>
+      </body>
     </html>
   );
 }

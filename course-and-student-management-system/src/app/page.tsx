@@ -8,7 +8,7 @@ export default function MyApp() {
   return (
     <Provider store={store}>
       <Layout>
-        <Home></Home>
+        <Home />
       </Layout>
     </Provider>
   );

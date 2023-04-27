@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { courses } from "../hello/route";
 import { Course } from "@/app/model/Course.model";
-=======
-import courses from '../hello/route';
-import { Course } from '@/app/model/Course.model';
->>>>>>> a04c119022ffc40c18d97629efc36a1c8d13ff1d
 
 export const getCourses = (): Course[] => {
   return courses;

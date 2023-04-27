@@ -1,4 +1,4 @@
-import { studentsArray1 } from '../hello/route';
+import { studentsArray1 } from '../../../hello/route';
 import { User } from '@/app/model/User.model';
 
 export const getUser = (): User[] => {

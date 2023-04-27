@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createUser, getUserById, updateUser } from '../api/services/User.service';
+import { createUser, getUserById, updateUser } from '../services/User.service';
 import { User } from '../model/User.model';
 
 interface ChildProps {
@@ -19,7 +19,6 @@ export default function HomeModalEdit({ openModalEditView, onChange, setOpenModa
     cedula: '',
     email: '',
     phone: '',
-    role: '',
   });
 
   useEffect(() => {
@@ -143,25 +142,6 @@ export default function HomeModalEdit({ openModalEditView, onChange, setOpenModa
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                   value={formDataCourse && formDataCourse.phone}
                                   min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
-                                  onChange={handleChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="sm:col-span-4">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Role
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input
-                                  type="text"
-                                  name="role"
-                                  id="role"
-                                  autoComplete="role"
-                                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.role}
                                   onChange={handleChange}
                                 />
                               </div>
