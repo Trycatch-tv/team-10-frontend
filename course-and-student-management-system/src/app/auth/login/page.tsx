@@ -14,9 +14,19 @@ const LoginPage = () => {
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(inputValues);
+    const formData = new FormData();
+    formData.append('email', inputValues.email);
+    formData.append('password', inputValues.password);
+    let res = await fetch(
+      process.env.NEXT_PUBLIC_BACKEND_URL + '/api/auth/login/',
+      {
+        method: 'POST',
+      }
+    );
+    console.log(res);
   };
 
   return (
