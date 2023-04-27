@@ -6,9 +6,10 @@ import CourseModalDelete from './CourseModalDelete';
 interface DropdownMenuProps {
   onClose?: () => void;
   viewCourseModal?: number;
+  role: string;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal, role }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openModalDetailView, setOpenModalDetailView] = useState(false);
   const [openModalEditView, setOpenModalEditView] = useState(false);
@@ -80,21 +81,32 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal })
               <button onClick={handleChangeModalDetailView} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-0">
                 Ver
               </button>
-              <button onClick={handleChangeModalEditView} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-1">
-                Editar
-              </button>
             </div>
-            <div className="py-1" role="none">
-              <button onClick={handleChangeModalDeleteView} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-2">
-                Eliminar
-              </button>
+            <div>
+              {role === 'admin' ? (
+                <div className="py-1" role="none">
+                  <button onClick={handleChangeModalEditView} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-1">
+                    Editar
+                  </button>
+                  <button onClick={handleChangeModalDeleteView} className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-2">
+                    Eliminar
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         )}
       </div>
       <CourseModalDetail openModalDetailView={openModalDetailView} onChange={handleChangeModalDetailView} setOpenModalDetailView={setOpenModalDetailView} viewCourseModal={viewCourseModal} />
       <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView} viewCourseModal={viewCourseModal}></CourseModalEdit>
-      <CourseModalDelete openModalEditView={openModalDeleteView} onChange={handleChangeModalDeleteView} setOpenModalEditView={setOpenModalDeleteView} viewCourseModal={viewCourseModal}></CourseModalDelete>
+      <CourseModalDelete
+        openModalEditView={openModalDeleteView}
+        onChange={handleChangeModalDeleteView}
+        setOpenModalEditView={setOpenModalDeleteView}
+        viewCourseModal={viewCourseModal}
+      ></CourseModalDelete>
     </>
   );
 };

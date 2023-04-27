@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import CourseOptions from './CourseOptions';
 
@@ -7,9 +8,10 @@ import CourseModalEdit from './CourseModalEdit';
 
 type Props = {
   courses: Course[];
+  role: string;
 };
 
-const CoursesList: React.FC<Props> = ({ courses }) => {
+const CoursesList: React.FC<Props> = ({ courses, role }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [openModalEditView, setOpenModalEditView] = useState(false);
 
@@ -33,11 +35,11 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
     //     student?.phone.toLowerCase().includes(lowerSearchTerm)
     // );
     return (
-      course.title.toLowerCase().includes(lowerSearchTerm) ||
+      // course.title.toLowerCase().includes(lowerSearchTerm) ||
       course.description.toLowerCase().includes(lowerSearchTerm) ||
       course.startDate.toLowerCase().includes(lowerSearchTerm) ||
       course.endDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.tutor.toLowerCase().includes(lowerSearchTerm)
+      course.tutor!.toLowerCase().includes(lowerSearchTerm)
       // ||filteredStudents.length > 0
     );
   });
@@ -52,15 +54,21 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button
-          onClick={handleChangeModalEditView}
-          className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
-          role="menuitem"
-          tabIndex={-1}
-          id="menu-item-1"
-        >
-          Crear nuevo
-        </button>
+        <div>
+          {role === 'admin' ? (
+            <button
+              onClick={handleChangeModalEditView}
+              className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
+              role="menuitem"
+              tabIndex={-1}
+              id="menu-item-1"
+            >
+              Crear nuevo
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
       <CourseModalEdit
         openModalEditView={openModalEditView}
@@ -75,7 +83,7 @@ const CoursesList: React.FC<Props> = ({ courses }) => {
           >
             <div className="flex justify-between">
               <h2 className="text-lg font-medium mb-2">{course.title}</h2>
-              <CourseOptions viewCourseModal={course.id} />
+              <CourseOptions viewCourseModal={course.id} role={role} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>
             <p className="text-sm text-gray-500 mb-2">

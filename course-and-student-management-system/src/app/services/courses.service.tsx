@@ -1,8 +1,9 @@
-import courses from '../hello/route';
-import { Course } from '@/app/model/Course.model';
+import database from "../../../api/database";
+import { courses } from "../../../api/hello/route";
+import { Course } from "@/app/model/Course.model";
 
-export const getCourses = (): Course[] => {
-  return courses;
+export const getCourse = async () => {
+  return await database.get<Course[]>('/cursos/');
 };
 
 export const getCourseById = (id: number): Course | undefined => {
