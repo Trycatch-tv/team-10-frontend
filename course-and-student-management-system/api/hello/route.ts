@@ -6,7 +6,7 @@ import { User } from "@/app/model/User.model";
 export const studentsArray1: User[] = [
   {
     id: 1,
-    role: 'students',
+    role: 'admin',
     name: 'Pepe Perez',
     cedula: '1111111111',
     email: 'estudiante1-1@example.com',
@@ -14,7 +14,7 @@ export const studentsArray1: User[] = [
   },
   {
     id: 2,
-    role: 'students',
+    role: 'admin',
     name: 'Estudiante 1-2',
     cedula: '2222222222',
     email: 'estudiante1-2@example.com',
@@ -22,7 +22,7 @@ export const studentsArray1: User[] = [
   },
   {
     id: 3,
-    role: 'students',
+    role: 'admin',
     name: 'Estudiante 1-3',
     cedula: '3333333333',
     email: 'estudiante1-3@example.com',
@@ -30,7 +30,7 @@ export const studentsArray1: User[] = [
   },
   {
     id: 4,
-    role: 'students',
+    role: 'admin',
     name: 'Estudiante 1-4',
     cedula: '4444444444',
     email: 'estudiante1-4@example.com',
@@ -38,7 +38,7 @@ export const studentsArray1: User[] = [
   },
   {
     id: 5,
-    role: 'students',
+    role: 'admin',
     name: 'Estudiante 1-5',
     cedula: '5555555555',
     email: 'estudiante1-5@example.com',
@@ -93,7 +93,7 @@ export const studentsArray2: User[] = [
 export const courses: Course[] = [
   {
     id: 1,
-    name: 'Curso 1-1',
+    title: 'Curso 1-1',
     description: 'Descripción del Curso 1-1',
     startDate: '2023-04-01',
     endDate: '2023-05-01',
@@ -102,7 +102,7 @@ export const courses: Course[] = [
   },
   {
     id: 2,
-    name: 'Curso 1-2',
+    title: 'Curso 1-2',
     description: 'Descripción del Curso 1-2',
     startDate: '2023-04-15',
     endDate: '2023-05-15',
@@ -111,7 +111,7 @@ export const courses: Course[] = [
   },
   {
     id: 3,
-    name: 'Curso 1-3',
+    title: 'Curso 1-3',
     description: 'Descripción del Curso 1-3',
     startDate: '2023-05-01',
     endDate: '2023-06-01',
@@ -120,7 +120,7 @@ export const courses: Course[] = [
   },
   {
     id: 4,
-    name: 'Curso 1-4',
+    title: 'Curso 1-4',
     description: 'Descripción del Curso 1-4',
     startDate: '2023-06-01',
     endDate: '2023-07-01',

@@ -14,7 +14,7 @@ export const UserContext = createContext<UserContext>({
         cedula: '',
         email: '',
         phone: '',
-        role: '',
+        role: 'admin',
     },
     setUser: () => {}
 });

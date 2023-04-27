@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { createCourse, getCourseById, updateCourse } from '../services/Courses.service';
-import { Students } from '../model/User.model';
+import { User } from '../model/User.model';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -16,12 +16,12 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
   const [formDataCourse, setFormDataCourse] = useState({
     id: viewCourseModal!,
-    name: '',
+    title: '',
     description: '',
     startDate: '',
     endDate: '',
     professor: '',
-    number_of_students: [] as Students[],
+    number_of_students: [] as User[],
   });
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                                   id="name"
                                   autoComplete="name"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.name}
+                                  value={formDataCourse && formDataCourse.title}
                                   onChange={handleChange}
                                 />
                               </div>

@@ -11,7 +11,7 @@ const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     cedula: '',
     email: '',
     phone: '',
-    role: '',
+    role: 'admin',
     isAuthenticated: true,
   });
 
