@@ -1,22 +1,31 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { getUserById } from '../../api/services/User.service';
 import { User } from '../../model/User.model';
 import HomeModalEdit from '@/app/components/HomeModalEdit';
+import { setRole } from '@/app/utils/features/auth/authSlice';
 
 const Home: React.FC = () => {
   const [students, setStudents] = useState<User>();
-
   const [openModalEditView, setOpenModalEditView] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleChangeModalEditView = () => {
     setOpenModalEditView(!openModalEditView);
   };
 
+  const handleRoleChange = (newRole: string) => {
+    dispatch(setRole(newRole));
+  }
+
   useEffect(() => {
-    const studentsData = getUserById(1);
-    setStudents(studentsData!);
+    const userData = getUserById(1);
+    setStudents(userData!);
+    handleRoleChange(userData!.role);
   }, []);
 
   return (
@@ -46,3 +55,28 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+
+
+
+// import { useDispatch, useSelector } from 'react-redux';
+// import { setRole } from '../features/auth/authSlice'; // Importa las acciones del slice creado
+
+// function MyComponent() {
+//   const role = useSelector((state) => state.auth.role); // Accede al rol del estado
+//   const dispatch = useDispatch();
+
+//   const handleRoleChange = (newRole) => {
+//     dispatch(setRole(newRole)); // Despacha la acción para actualizar el rol en el estado
+//   }
+
+//   return (
+//     <div>
+//       <p>Rol: {role}</p>
+//       <button onClick={() => handleRoleChange('admin')}>Establecer rol como Admin</button>
+//       <button onClick={() => handleRoleChange('user')}>Establecer rol como Usuario</button>
+//     </div>
+//   );
+// }
+
+// export default MyComponent;
