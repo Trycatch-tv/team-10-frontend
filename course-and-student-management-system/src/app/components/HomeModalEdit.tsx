@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createUser, getUserById, updateUser } from '../api/services/User.service';
+import { createUser, getUserById, updateUser } from '../services/User.service';
 import { User } from '../model/User.model';
 
 interface ChildProps {

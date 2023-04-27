@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import NextLink from 'next/link';
-import { AuthLogin } from '@/app/api/services/Auth.service';
+import { AuthLogin } from '@/app/services/Auth.service';
 
 interface FormData {
   email: '';

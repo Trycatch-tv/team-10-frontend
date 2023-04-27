@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import CoursesList from '../../components/CoursesList';
 
-import { getCourses } from '../../api/services/Courses.service';
+import { getCourses } from '../../services/Courses.service';
 import { Course } from '../../model/Course.model';
 import { UserContext } from '@/app/hooks/UserContex';
 

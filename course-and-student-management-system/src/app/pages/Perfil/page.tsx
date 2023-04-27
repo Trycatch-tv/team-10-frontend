@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { getUserById } from '../../api/services/User.service';
+import { getUserById } from '../../services/User.service';
 import { User } from '../../model/User.model';
 import HomeModalEdit from '@/app/components/HomeModalEdit';
 import { UserContext } from '@/app/hooks/UserContex';

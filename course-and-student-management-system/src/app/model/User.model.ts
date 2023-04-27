@@ -5,5 +5,5 @@ export type User = {
     cedula: string;
     email: string;
     phone: string;
-    role?: 'admin' | 'student' | 'teacher';
+    role?: 'admin' | 'students' | 'teacher';
 };
