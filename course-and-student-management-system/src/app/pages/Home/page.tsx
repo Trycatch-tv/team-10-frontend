@@ -1,39 +1,60 @@
 'use client';
-import { useEffect, useState } from 'react';
 
-import { getStudentsById } from '../../api/services/students.service';
-// import { Students } from '../model/Students.model';
+import { useContext, useEffect } from 'react';
+import NextLink from 'next/link';
+import { UserContext } from '@/app/hooks/UserContex';
+import { useRouter } from 'next/navigation';
 
 const Home: React.FC = () => {
-  // const [students, setStudents] = useState<Students>();
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    // const studentsData = getStudentsById('1');
-    // setStudents(studentsData!);
+    if (!user.isAuthenticated) {
+      router.push('/auth/login');
+    }
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="flex flex-wrap max-w-3xl mx-4 bg-white shadow-md rounded-lg">
-        <div className="flex justify-center items-center m-4">
-          <div className="w-40 h-40 rounded-full bg-gray-500"></div>
-        </div>
-        <div className="flex-1 flex-wrap p-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">Información Personal</h1>
-            <p className="text-gray-500">Nombre: John Doe</p>
-            <p className="text-gray-500">Cédula: 12345678</p>
-            <p className="text-gray-500">Email: john.doe@example.com</p>
-            <p className="text-gray-500">Teléfono: +1 (123) 456-7890</p>
+    <>
+      <div className="bg-neutral-200 grid justify-items-center ">
+        <div className="bg-yellow-500 bg-[url(/background.png)] shadow-inner bg-center w-[90%] h-extra-high my-10 rounded-lg flex flex-col items-center justify-between px-10 md:flex-row">
+          <div>
+            <h1 className="text-4xl font-bold text-white text-neutral-100 m-4">
+              Aprende desde <br />
+              la comodidad de tu casa.
+            </h1>
+            <div>
+              {user.role === 'admin' ? (
+                <>
+                  <NextLink href="/pages/Courses" className="mt-10 bg-gray-700 text-white rounded-xl p-3 flex w-fit gap-5 hover:bg-gray-500">
+                    Ver cursos
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                    </svg>
+                  </NextLink>
+                  <NextLink href="/pages/Courses" className="mt-10 bg-gray-700 text-white rounded-xl p-3 flex w-fit gap-5 hover:bg-gray-500">
+                    Ver estudiantes
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                    </svg>
+                  </NextLink>
+                  <NextLink href="/pages/Courses" className="mt-10 bg-gray-700 text-white rounded-xl p-3 flex w-fit gap-5 hover:bg-gray-500">
+                    Ver profesores
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                    </svg>
+                  </NextLink>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center items-center">
-            <button className="bg-blue-500 m-2 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-4">Cursos</button>
-            <button className="bg-blue-500 m-2 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-4">Estudiantes</button>
-            <button className="bg-blue-500 m-2 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mb-4">Profesores</button>
-          </div>
+          <img src="/student.png" className="aspect-auto w-96 bg-orange-600 p-1 rounded-full" />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

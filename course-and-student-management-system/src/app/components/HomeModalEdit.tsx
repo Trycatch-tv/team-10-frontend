@@ -2,30 +2,27 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createCourse, getCourseById, updateCourse } from '../services/Courses.service';
-import { Students } from '../model/User.model';
+import { createUser, getUserById, updateUser } from '../services/User.service';
+import { User } from '../model/User.model';
 
 interface ChildProps {
   openModalEditView: boolean;
   onChange: () => void;
   setOpenModalEditView: (value: boolean) => void;
-  viewCourseModal?: number;
+  idUserModal?: number;
 }
 
-export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
-
-  const [formDataCourse, setFormDataCourse] = useState({
-    id: viewCourseModal!,
+export default function HomeModalEdit({ openModalEditView, onChange, setOpenModalEditView, idUserModal }: ChildProps) {
+  const [formDataCourse, setFormDataCourse] = useState<User>({
+    id: idUserModal!,
     name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    professor: '',
-    number_of_students: [] as Students[],
+    cedula: '',
+    email: '',
+    phone: '',
   });
 
   useEffect(() => {
-    const courseData = getCourseById(viewCourseModal!);
+    const courseData = getUserById(idUserModal!);
     setFormDataCourse(courseData!);
   }, []);
 
@@ -37,10 +34,10 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
   };
 
   const handleSubmit = () => {
-    if(viewCourseModal){
-      updateCourse( viewCourseModal!, formDataCourse )
-    }else{
-      createCourse(formDataCourse)
+    if (idUserModal) {
+      updateUser(idUserModal!, formDataCourse);
+    } else {
+      createUser(formDataCourse);
     }
     setOpenModalEditView(false);
   };
@@ -74,12 +71,12 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                         Editar Curso
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="mt-1 text-sm leading-6 text-gray-600">Aqui pudes crear nuevos cursos llena la informacion</p>
+                        <p className="mt-1 text-sm leading-6 text-gray-600">Aqui pudes editar llena la informacion</p>
 
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                           <div className="sm:col-span-4">
                             <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Nombre del curso
+                              Nombre del usuario
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -98,15 +95,14 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
                           <div className="col-span-full">
                             <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                              Descripcion
+                              Cedula
                             </label>
                             <div className="mt-2">
-                              <textarea
-                                id="description"
-                                name="description"
-                                rows={3}
+                              <input
+                                id="cedula"
+                                name="cedula"
                                 className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                value={formDataCourse && formDataCourse.description}
+                                value={formDataCourse && formDataCourse.cedula}
                                 onChange={handleChange}
                               />
                             </div>
@@ -114,17 +110,17 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
                           <div className="sm:col-span-4">
                             <label htmlFor="startDate" className="block text-sm font-medium leading-6 text-gray-900">
-                              Fecha inicio
+                              Elmail
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
-                                  type="date"
-                                  name="startDate"
-                                  id="startDate"
-                                  autoComplete="startDate"
+                                  type="email"
+                                  name="email"
+                                  id="email"
+                                  autoComplete="email"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.startDate}
+                                  value={formDataCourse && formDataCourse.email}
                                   min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
                                   onChange={handleChange}
                                 />
@@ -134,37 +130,18 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
                           <div className="sm:col-span-4">
                             <label htmlFor="endDate" className="block text-sm font-medium leading-6 text-gray-900">
-                              Fecha finalización
+                              Telefono
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
-                                  type="date"
-                                  name="endDate"
-                                  id="endDate"
-                                  autoComplete="endDate"
+                                  type="tel"
+                                  name="phone"
+                                  id="phone"
+                                  autoComplete="phone"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.endDate}
+                                  value={formDataCourse && formDataCourse.phone}
                                   min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
-                                  onChange={handleChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="sm:col-span-4">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Profesor
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input
-                                  type="text"
-                                  name="professor"
-                                  id="professor"
-                                  autoComplete="professor"
-                                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.professor}
                                   onChange={handleChange}
                                 />
                               </div>
