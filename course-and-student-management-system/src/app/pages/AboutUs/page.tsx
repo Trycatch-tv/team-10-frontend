@@ -39,12 +39,12 @@ const page = () => {
     <div className="bg-neutral-100 h-[98vh] flex flex-col items-center">
       <h1 className="font-semibold text-4xl text-neutral-950 mt-5">Sobre nosotros</h1>
       <section className="flex gap-2 h-full items-start mt-16">
-        {partners.map((p) => (
-          <div className="  text-neutral-200 bg-gray-800 p-5 rounded-xl px-9 flex flex-col items-center gap-1 w-[265px] h-fit">
+        {partners.map((p, index) => (
+          <div key={index} className="  text-neutral-200 bg-gray-800 p-5 rounded-xl px-9 flex flex-col items-center gap-1 w-[265px] h-fit">
             <img src={p.image} alt="profile pic" className="rounded-full w-24" />
             <h3 className="font-semibold text-lg">{p.name}</h3>
             <h4 className="font-medium">{p.rol}</h4>
-            <div className="flex gap-3 ">
+            <div className="flex gap-3 pt-1">
               {p.github && (
                 <a href={p.github} target="_blank">
                   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-9 hover:fill-neutral-200 transition-all duration-300">
