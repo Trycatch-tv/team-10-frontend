@@ -1,6 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import NextLink from 'next/link';
+import { AuthRegister } from '@/app/services/Auth.service';
+import { validate } from './validate';
+import { UserContext } from '@/app/hooks/UserContex';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   name: string;
@@ -9,33 +13,59 @@ interface FormData {
   phone: string;
   password: string;
   repeatPassword: string;
+  rol: string;
 }
+interface Errors extends FormData {
+  general?: string;
+}
+const initialErrors = { name: '', document: '', email: '', password: '', phone: '', repeatPassword: '', general: '', rol: '' };
 
 const RegisterPage = () => {
   const [mounted, setMounted] = useState(false);
-  const [errors, setErrors] = useState<FormData>({
-    name: 'Nombre debe ser superior a 3 letras.',
-    document: 'Se requiere el numero de cedula',
-    email: 'No es un correo valido.',
-    password: 'Debe ser mayor a 8 caracteres',
-    phone: 'Se requiere un numero de telefono',
-    repeatPassword: 'Se requiere una contraseña',
-  });
-  const [inputValues, setInputValues] = useState<FormData>({
+  const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
+  const [inputValues, setInputValues] = useState<FormData>({ ...initialErrors, rol: 'students' });
+  const [errors, setErrors] = useState<Errors>({
     name: '',
+    document: '',
     email: '',
     password: '',
-    repeatPassword: '',
-    document: '',
     phone: '',
+    repeatPassword: '',
+    general: '',
+    rol: '',
   });
 
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors(initialErrors);
+    let [isExistErrors, flag] = validate(inputValues);
+    console.log(isExistErrors, flag);
+    setErrors({ ...isExistErrors, rol: inputValues.rol });
     console.log(inputValues);
+    if (flag) {
+      return;
+    }
+    const bodyRequest = {
+      username: inputValues.name,
+      cedula: inputValues.document,
+      email: inputValues.email,
+      password: inputValues.password,
+      phone: Number(inputValues.phone.replace(' ', '')),
+      rol: inputValues.rol,
+    };
+    const res: any = await AuthRegister(bodyRequest);
+    console.log(res.response);
+    if (res.response.status === 400) {
+      console.log('e');
+      setErrors({ ...isExistErrors, rol: inputValues.rol, general: 'Ya existe una cuenta con ese correo' });
+    }
+    setUser({ isAuthenticated: true, ...res.data });
+    router.replace('/pages/Courses');
+    console.log(res);
   };
   useEffect(() => {
     setMounted(true);
@@ -49,9 +79,9 @@ const RegisterPage = () => {
         alt="student-image"
         className="aspect-auto w-3/5 h-screen hidden sm:block min-w-3/5"
       />
-      <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full">
+      <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full overflow-scroll">
         <h1 className="text-black">Logo</h1>
-        <form className="flex flex-col justify-start text-black gap-6 w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
+        <form className="flex flex-col justify-start text-black  w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col">
             <label htmlFor="input-nombre">Tu nombre:</label>
             <input
@@ -108,7 +138,7 @@ const RegisterPage = () => {
             <input
               id="input-phone"
               placeholder="3133335544"
-              type="text"
+              type="tel"
               className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black"
               value={inputValues.phone}
               name="phone"
@@ -156,18 +186,19 @@ const RegisterPage = () => {
           </div>
           <div className="flex flex-col">
             <label htmlFor="selectValue">Rol:</label>
-            <select id="selectValue" className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black" name="rol" onChange={(e) => handleChangeValues(e)}>
-              <option>Estudiante</option>
-              <option>Profesor</option>
+            <select id="selectValue" name="rol" onChange={(e) => handleChangeValues(e)} className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black">
+              <option value="students">Estudiante</option>
+              <option value="teacher">Profesor</option>
             </select>
           </div>
-          <button className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end" type="submit">
+          {errors.general && <h2 className="text-red-600 text-lg font-semibold ml-2 self-center">{errors.general}</h2>}
+          <button className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end mt-2" type="submit">
             Registrarme
           </button>
         </form>
         <hr className=" border-1 w-1/2 border-black rounded-full"></hr>
-        <h3 className="text-black text-3xl">O</h3>
-        <NextLink className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-2" href="/auth/login">
+        <h3 className="text-black text-2xl">O</h3>
+        <NextLink className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-1" href="/auth/login">
           Inicia sesion
         </NextLink>
       </div>

@@ -1,30 +1,53 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import NextLink from 'next/link';
 import { AuthLogin } from '@/app/services/Auth.service';
+import { UserContext } from '@/app/hooks/UserContex';
+import { validate } from './validate';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   email: string;
   password: string;
 }
-
+interface Errors extends FormData {
+  general?: string;
+}
 const LoginPage = () => {
+  const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
   const [inputValues, setInputValues] = useState<FormData>({
     email: '',
     password: '',
   });
-  const [errors, setErrors] = useState<{ email: string }>({
-    email: 'No es un correo valido.',
+  const [errors, setErrors] = useState<Errors>({
+    email: '',
+    password: '',
+    general: '',
   });
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    AuthLogin(inputValues);
-    console.log(inputValues);
+    setErrors({ email: '', password: '', general: '' });
+    let isExistErrors = validate(inputValues);
+    setErrors(isExistErrors);
+    if (isExistErrors.email || isExistErrors.password) {
+      return;
+    }
+
+    const response: any = await AuthLogin(inputValues);
+    console.log(response);
+    console.log(response?.status);
+    if (response.status === 404) {
+      setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
+      return;
+    }
+    setUser({ isAuthenticated: true, ...response });
+    router.replace('/pages/Courses');
   };
 
   return (
@@ -65,7 +88,13 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => handleChangeValues(e)}
             />
+            {errors.password && (
+              <label htmlFor="input-contraseña" className="text-red-600 text-xs ml-2">
+                {errors.password}:
+              </label>
+            )}
           </div>
+          {errors.general && <p className="text-red-600 text-sm ml-2 font-semibold">{errors.general}</p>}
           <button className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end" type="submit">
             Inicia sesion
           </button>
