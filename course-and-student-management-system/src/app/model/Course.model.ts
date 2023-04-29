@@ -1,14 +1,13 @@
 import { User } from "./User.model";
+import { Cagories } from "./Categories.model";
 
 export type Course = {
-    id: number;
-    title: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    professor: string;
-    number_of_students: User[];
-    fechaInicio?: string;
-    fechaFinalizacion?: string;
-    tutor?: string;
-  };
+  id: number;
+  nombre: string;
+  descripcion: string;
+  profesor: string;
+  categoria: number[];
+  fechaInicio: string;
+  fechaFinalizacion: string;
+  number_of_students: User[];
+};

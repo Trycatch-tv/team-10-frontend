@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import CourseOptions from './CourseOptions';
 
 import { Course } from '../model/Course.model';
 import CourseModalEdit from './CourseModalEdit';
+import { MyContext } from '../hooks/UseReducer';
 
 type Props = {
   courses: Course[];
   role: string;
 };
 
-const CoursesList: React.FC<Props> = ({ courses, role }) => {
+const CoursesList: React.FC<Props> = ({ role }) => {
+  const { state, dispatch } = useContext(MyContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [openModalEditView, setOpenModalEditView] = useState(false);
 
@@ -23,9 +25,9 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('searchTerm', searchTerm);
     }
-  }, [searchTerm]);
+  }, [state.courses]);
 
-  const filteredCourses = courses.filter((course) => {
+  const filteredCourses = state.courses.filter((course) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
     // const filteredStudents = course?.number_of_students.filter(
     //   (student) =>
@@ -35,11 +37,11 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
     //     student?.phone.toLowerCase().includes(lowerSearchTerm)
     // );
     return (
-      // course.title.toLowerCase().includes(lowerSearchTerm) ||
-      course.description.toLowerCase().includes(lowerSearchTerm) ||
-      course.startDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.endDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.tutor!.toLowerCase().includes(lowerSearchTerm)
+      course.nombre.toLowerCase().includes(lowerSearchTerm) ||
+      course.descripcion.toLowerCase().includes(lowerSearchTerm) ||
+      course.fechaInicio.toLowerCase().includes(lowerSearchTerm) ||
+      course.fechaFinalizacion.toLowerCase().includes(lowerSearchTerm) ||
+      course.profesor!.toLowerCase().includes(lowerSearchTerm)
       // ||filteredStudents.length > 0
     );
   });
@@ -58,7 +60,7 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
           {role === 'admin' ? (
             <button
               onClick={handleChangeModalEditView}
-              className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
+              className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500"
               role="menuitem"
               tabIndex={-1}
               id="menu-item-1"
@@ -82,8 +84,8 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
             className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3"
           >
             <div className="flex justify-between">
-              <h2 className="text-lg font-medium mb-2">{course.title}</h2>
-              <CourseOptions viewCourseModal={course.id} role={role} />
+              <h2 className="text-lg font-medium mb-2">{course.nombre}</h2>
+              <CourseOptions viewIdCourseModal={course.id} role={role} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>
             <p className="text-sm text-gray-500 mb-2">

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import CourseModalDetail from './CourseModalDetail';
 import CourseModalEdit from './CourseModalEdit';
@@ -5,11 +7,11 @@ import CourseModalDelete from './CourseModalDelete';
 
 interface DropdownMenuProps {
   onClose?: () => void;
-  viewCourseModal?: number;
+  viewIdCourseModal?: number;
   role: string;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal, role }) => {
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewIdCourseModal, role }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openModalDetailView, setOpenModalDetailView] = useState(false);
   const [openModalEditView, setOpenModalEditView] = useState(false);
@@ -42,6 +44,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal, r
   };
 
   useEffect(() => {
+    console.log(viewIdCourseModal)
     if (isOpen) {
       document.addEventListener('click', handleOutsideClick);
     }
@@ -49,7 +52,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal, r
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, viewIdCourseModal]);
 
   return (
     <>
@@ -99,13 +102,13 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewCourseModal, r
           </div>
         )}
       </div>
-      <CourseModalDetail openModalDetailView={openModalDetailView} onChange={handleChangeModalDetailView} setOpenModalDetailView={setOpenModalDetailView} viewCourseModal={viewCourseModal} />
-      <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView} viewCourseModal={viewCourseModal}></CourseModalEdit>
+      <CourseModalDetail openModalDetailView={openModalDetailView} onChange={handleChangeModalDetailView} setOpenModalDetailView={setOpenModalDetailView} viewCourseModal={viewIdCourseModal} />
+      <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView} viewCourseModal={viewIdCourseModal}></CourseModalEdit>
       <CourseModalDelete
         openModalEditView={openModalDeleteView}
         onChange={handleChangeModalDeleteView}
         setOpenModalEditView={setOpenModalDeleteView}
-        viewCourseModal={viewCourseModal}
+        viewCourseModal={viewIdCourseModal}
       ></CourseModalDelete>
     </>
   );
