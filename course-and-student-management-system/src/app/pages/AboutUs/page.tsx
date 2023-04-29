@@ -6,7 +6,9 @@ interface partnerI {
   github?: string;
   linkedin?: string;
 }
-
+export const metadata = {
+  title: 'Sobre nosotros',
+};
 const partners: partnerI[] = [
   {
     name: 'Juan Pablo Rodriguez',
