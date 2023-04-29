@@ -40,9 +40,7 @@ const LoginPage = () => {
     }
 
     const response: any = await AuthLogin(inputValues);
-    console.log(response);
-    console.log(response?.status);
-    if (response.status === 404) {
+    if (response.statusText !== 'OK') {
       setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
       return;
     }

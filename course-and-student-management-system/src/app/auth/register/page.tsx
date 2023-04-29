@@ -45,7 +45,6 @@ const RegisterPage = () => {
     let [isExistErrors, flag] = validate(inputValues);
     console.log(isExistErrors, flag);
     setErrors({ ...isExistErrors, rol: inputValues.rol });
-    console.log(inputValues);
     if (flag) {
       return;
     }
@@ -58,10 +57,9 @@ const RegisterPage = () => {
       rol: inputValues.rol,
     };
     const res: any = await AuthRegister(bodyRequest);
-    console.log(res.response);
-    if (res.response.status === 400) {
-      console.log('e');
+    if (res.statusText !== 'Created') {
       setErrors({ ...isExistErrors, rol: inputValues.rol, general: 'Ya existe una cuenta con ese correo' });
+      return;
     }
     setUser({ isAuthenticated: true, ...res.data });
     router.replace('/pages/Courses');
@@ -187,8 +185,8 @@ const RegisterPage = () => {
           <div className="flex flex-col">
             <label htmlFor="selectValue">Rol:</label>
             <select id="selectValue" name="rol" onChange={(e) => handleChangeValues(e)} className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black">
-              <option value="students">Estudiante</option>
-              <option value="teacher">Profesor</option>
+              <option value="estudiante">Estudiante</option>
+              <option value="profesor">Profesor</option>
             </select>
           </div>
           {errors.general && <h2 className="text-red-600 text-lg font-semibold ml-2 self-center">{errors.general}</h2>}
