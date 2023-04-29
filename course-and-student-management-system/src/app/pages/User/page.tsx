@@ -30,11 +30,11 @@ const Courses: React.FC = () => {
       router.push('/auth/login');
     }
     setStudents(getUser());
-  }, []);
+  }, [students]);
 
   return (
     <div className="p-4 bg-gray-200">
-      <h2>Estudiantes</h2>
+      <h2>Usuarios</h2>
       <h3 className="text-xl font-bold mb-4 gap-4 flex justify-center items-center">Total de estudiantes {students ? students.length : 0}</h3>
       <div className="not-prose relative bg-slate-50 rounded-xl overflow-hidden dark:bg-slate-800/25">
         <div className="relative rounded-xl overflow-auto">

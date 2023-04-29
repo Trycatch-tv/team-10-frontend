@@ -56,7 +56,9 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
   const handleSubmit = () => {
     if (viewCourseModal) {
-      updateCourse(viewCourseModal!, formDataCourse);
+      updateCourse(viewCourseModal!, formDataCourse).then((res) => {
+        console.log(res);
+      });
     } else {
       createCourse(formDataCourse).then((res) => {
         console.log(res);

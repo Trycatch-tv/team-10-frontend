@@ -44,7 +44,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewIdCourseModal,
   };
 
   useEffect(() => {
-    console.log(viewIdCourseModal)
     if (isOpen) {
       document.addEventListener('click', handleOutsideClick);
     }
@@ -52,7 +51,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ onClose, viewIdCourseModal,
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [isOpen, onClose, viewIdCourseModal]);
+  }, [isOpen, onClose]);
 
   return (
     <>

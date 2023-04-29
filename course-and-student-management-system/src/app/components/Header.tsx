@@ -30,11 +30,8 @@ const Header = () => {
             </Link>
             {user.role === 'admin' ? (
               <>
-                <Link href="/pages/Students" className="text-white hover:text-gray-400">
-                  Docentes
-                </Link>
-                <Link href="/pages/Students" className="text-white hover:text-gray-400">
-                  Estudiantes
+                <Link href="/pages/User" className="text-white hover:text-gray-400">
+                  Usuarios
                 </Link>
               </>
             ) : (
