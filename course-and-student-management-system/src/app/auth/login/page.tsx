@@ -1,28 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import NextLink from 'next/link';
 import { AuthLogin } from '@/app/services/Auth.service';
+import { UserContext } from '@/app/hooks/UserContex';
+import { validate } from './validate';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
-  email: '';
-  password: '';
+  email: string;
+  password: string;
 }
-
+interface Errors extends FormData {
+  general?: string;
+}
 const LoginPage = () => {
+  const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
   const [inputValues, setInputValues] = useState<FormData>({
     email: '',
     password: '',
   });
-
+  const [errors, setErrors] = useState<Errors>({
+    email: '',
+    password: '',
+    general: '',
+  });
   const handleChangeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    AuthLogin(inputValues);
-    console.log(inputValues);
+    setErrors({ email: '', password: '', general: '' });
+    let isExistErrors = validate(inputValues);
+    setErrors(isExistErrors);
+    if (isExistErrors.email || isExistErrors.password) {
+      return;
+    }
+
+    const response: any = await AuthLogin(inputValues);
+    if (response.statusText !== 'OK') {
+      setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
+      return;
+    }
+    setUser({ isAuthenticated: true, ...response });
+    router.replace('/pages/Courses');
   };
 
   return (
@@ -34,10 +57,7 @@ const LoginPage = () => {
       />
       <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full">
         <h1 className="text-black">Logo</h1>
-        <form
-          className="flex flex-col justify-start text-black gap-6 w-1/2 my-5"
-          onSubmit={(e) => handleSubmit(e)}
-        >
+        <form className="flex flex-col justify-start text-black gap-6 w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col">
             <label htmlFor="input-correo">Correo:</label>
             <input
@@ -49,6 +69,11 @@ const LoginPage = () => {
               name="email"
               onChange={(e) => handleChangeValues(e)}
             />
+            {errors.email && (
+              <label htmlFor="input-correo" className="text-red-600 text-xs ml-2">
+                {errors.email}:
+              </label>
+            )}
           </div>
           <div className="flex flex-col">
             <label htmlFor="input-contraseña">Contraseña:</label>
@@ -61,20 +86,20 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => handleChangeValues(e)}
             />
+            {errors.password && (
+              <label htmlFor="input-contraseña" className="text-red-600 text-xs ml-2">
+                {errors.password}:
+              </label>
+            )}
           </div>
-          <button
-            className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end"
-            type="submit"
-          >
+          {errors.general && <p className="text-red-600 text-sm ml-2 font-semibold">{errors.general}</p>}
+          <button className="border-2 bg-blue-800 text-neutral-50 rounded-lg p-2 self-end" type="submit">
             Inicia sesion
           </button>
         </form>
         <hr className=" border-1 w-1/2 border-black rounded-full"></hr>
         <h3 className="text-black text-3xl">O</h3>
-        <NextLink
-          className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-2"
-          href="/auth/register"
-        >
+        <NextLink className="border-blue-800 border-1 text-blue-800 bg-blue-100 rounded-lg p-2 self-center mt-2" href="/auth/register">
           Registrate
         </NextLink>
       </div>

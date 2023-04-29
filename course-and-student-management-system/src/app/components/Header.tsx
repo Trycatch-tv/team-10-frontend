@@ -14,14 +14,15 @@ const Header = () => {
             <Link href="/pages/Courses" className="text-white hover:text-gray-400">
               Cursos
             </Link>
+            <Link href="/pages/AboutUs" className="text-white hover:text-gray-400">
+              Sobre nosotros
+            </Link>
           </div>
           <div>
             <Link href="/pages/Perfil" className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500">
               Perfil
             </Link>
-            <button className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 m-2">
-              Cerrar sesion
-            </button>
+            <button className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 m-2">Cerrar sesion</button>
           </div>
         </div>
       </header>
