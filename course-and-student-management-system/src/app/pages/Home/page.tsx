@@ -20,7 +20,7 @@ const Home: React.FC = () => {
       <div className="bg-neutral-200 grid justify-items-center ">
         <div className="bg-yellow-500 bg-[url(/background.png)] shadow-inner bg-center w-[90%] h-extra-high my-10 rounded-lg flex flex-col items-center justify-between px-10 md:flex-row">
           <div>
-            <h1 className="text-4xl font-bold text-white text-neutral-100 m-4">
+            <h1 className="text-4xl font-bold text-white m-4">
               Aprende desde <br />
               la comodidad de tu casa.
             </h1>

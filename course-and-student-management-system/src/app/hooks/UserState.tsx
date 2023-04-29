@@ -1,10 +1,14 @@
 'use client';
 
 import { User } from '../model/User.model';
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useReducer } from 'react';
 import { UserContext } from './UserContex';
+import { MyContextProvider } from './CourseReducer';
+import { UseReducer, initialState } from './UseReducer';
+
 
 const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
   const [user, setUser] = useState<User>({
     id: 0,
     name: '',
@@ -17,12 +21,11 @@ const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      {children}
+      <MyContextProvider>
+        {children}
+      </MyContextProvider>
     </UserContext.Provider>
   );
 };
 
-export default AppStateProvider ;
-
-
-// const { user, setUser } = useContext(UserContext);
+export default AppStateProvider;
