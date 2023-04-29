@@ -1,9 +1,12 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { createCourse, getCourseById, updateCourse } from '../services/Courses.service';
-import { Students } from '../model/User.model';
+import { User } from '../model/User.model';
+import { Cagories } from '../model/Categories.model';
+import { getCategory } from '../services/Categoriy.service';
+import { MyContext } from '../hooks/UseReducer';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -13,20 +16,27 @@ interface ChildProps {
 }
 
 export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
-
+  const { state, dispatch } = useContext(MyContext);
+  const [selectedCategory, setSelectedCategory] = useState([0]);
+  const [category, setcategory] = useState<Cagories[]>([]);
   const [formDataCourse, setFormDataCourse] = useState({
     id: viewCourseModal!,
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    professor: '',
-    number_of_students: [] as Students[],
+    nombre: '',
+    descripcion: '',
+    fechaInicio: '',
+    fechaFinalizacion: '',
+    profesor: '',
+    categoria: [0],
+    number_of_students: [] as User[],
   });
 
   useEffect(() => {
-    const courseData = getCourseById(viewCourseModal!);
+    const courseData = getCourseById(viewCourseModal!, state.courses);
     setFormDataCourse(courseData!);
+
+    getCategory().then((res) => {
+      setcategory(res.data);
+    });
   }, []);
 
   const cancelButtonRef = useRef(null);
@@ -34,13 +44,25 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormDataCourse({ ...formDataCourse, [name]: value });
+    console.log(formDataCourse, formDataCourse.id);
+  };
+
+  const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue: string = event.target.value;
+    const numberValue: number = parseInt(selectedValue, 10);
+    setSelectedCategory([numberValue]);
+    setFormDataCourse({ ...formDataCourse, categoria: [...selectedCategory] });
   };
 
   const handleSubmit = () => {
-    if(viewCourseModal){
-      updateCourse( viewCourseModal!, formDataCourse )
-    }else{
-      createCourse(formDataCourse)
+    if (viewCourseModal) {
+      updateCourse(viewCourseModal!, formDataCourse).then((res) => {
+        console.log(res);
+      });
+    } else {
+      createCourse(formDataCourse).then((res) => {
+        console.log(res);
+      });
     }
     setOpenModalEditView(false);
   };
@@ -85,11 +107,11 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="text"
-                                  name="name"
-                                  id="name"
-                                  autoComplete="name"
+                                  name="nombre"
+                                  id="nombre"
+                                  autoComplete="nombre"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.name}
+                                  value={formDataCourse && formDataCourse.nombre}
                                   onChange={handleChange}
                                 />
                               </div>
@@ -102,16 +124,36 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                             </label>
                             <div className="mt-2">
                               <textarea
-                                id="description"
-                                name="description"
+                                id="descripcion"
+                                name="descripcion"
                                 rows={3}
                                 className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                value={formDataCourse && formDataCourse.description}
+                                value={formDataCourse && formDataCourse.descripcion}
                                 onChange={handleChange}
                               />
                             </div>
                           </div>
-
+                          <div className="col-span-full">
+                            <label htmlFor="categoria" className="block text-sm font-medium leading-6 text-gray-700">
+                              categoria
+                            </label>
+                            <div className="mt-1 relative">
+                              <select
+                                id="categoria"
+                                name="categoria"
+                                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                                value={selectedCategory[0] && selectedCategory[0]}
+                                onChange={handleChangeCategory}
+                              >
+                                <option value="">Seleccione una categoria</option>
+                                {category.map((category) => (
+                                  <option key={category.id} value={category.id}>
+                                    {category.nombre}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
                           <div className="sm:col-span-4">
                             <label htmlFor="startDate" className="block text-sm font-medium leading-6 text-gray-900">
                               Fecha inicio
@@ -120,11 +162,11 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="date"
-                                  name="startDate"
-                                  id="startDate"
-                                  autoComplete="startDate"
+                                  name="fechaInicio"
+                                  id="fechaInicio"
+                                  autoComplete="fechaInicio"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.startDate}
+                                  value={formDataCourse && formDataCourse.fechaInicio}
                                   min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
                                   onChange={handleChange}
                                 />
@@ -140,11 +182,11 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="date"
-                                  name="endDate"
-                                  id="endDate"
-                                  autoComplete="endDate"
+                                  name="fechaFinalizacion"
+                                  id="fechaFinalizacion"
+                                  autoComplete="fechaFinalizacion"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.endDate}
+                                  value={formDataCourse && formDataCourse.fechaFinalizacion}
                                   min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
                                   onChange={handleChange}
                                 />
@@ -160,11 +202,11 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="text"
-                                  name="professor"
-                                  id="professor"
-                                  autoComplete="professor"
+                                  name="profesor"
+                                  id="profesor"
+                                  autoComplete="profesor"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.professor}
+                                  value={formDataCourse && formDataCourse.profesor}
                                   onChange={handleChange}
                                 />
                               </div>

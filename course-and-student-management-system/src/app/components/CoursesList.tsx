@@ -1,19 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import CourseOptions from './CourseOptions';
 
 import { Course } from '../model/Course.model';
 import CourseModalEdit from './CourseModalEdit';
+import { MyContext } from '../hooks/UseReducer';
+import { getCategory } from '../services/Categoriy.service';
+import { Cagories } from '../model/Categories.model';
 
 type Props = {
   courses: Course[];
   role: string;
 };
 
-const CoursesList: React.FC<Props> = ({ courses, role }) => {
+const CoursesList: React.FC<Props> = ({ role }) => {
+  const { state, dispatch } = useContext(MyContext);
+  const [selected, setSelected] = useState<Cagories[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [openModalEditView, setOpenModalEditView] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Cagories | undefined>();
 
   const handleChangeModalEditView = () => {
     setOpenModalEditView(!openModalEditView);
@@ -23,24 +29,25 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('searchTerm', searchTerm);
     }
-  }, [searchTerm]);
-
-  const filteredCourses = courses.filter((course) => {
+    getCategory().then((res) => {
+      setSelected(res.data);
+    });
+  }, [state.courses]);
+  
+  const filteredCoursesCategory = selectedCategory?.id
+  ? state.courses.filter(course => {
+      return course.categoria[0] === selectedCategory.id;
+    })
+  : state.courses;
+  
+  const filteredCourses = filteredCoursesCategory.filter((course) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
-    const filteredStudents = course.number_of_students.filter(
-      (student) =>
-        student.name.toLowerCase().includes(lowerSearchTerm) ||
-        student.cedula.toLowerCase().includes(lowerSearchTerm) ||
-        student.email.toLowerCase().includes(lowerSearchTerm) ||
-        student.phone.toLowerCase().includes(lowerSearchTerm)
-    );
     return (
-      course.name.toLowerCase().includes(lowerSearchTerm) ||
-      course.description.toLowerCase().includes(lowerSearchTerm) ||
-      course.startDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.endDate.toLowerCase().includes(lowerSearchTerm) ||
-      course.professor.toLowerCase().includes(lowerSearchTerm) ||
-      filteredStudents.length > 0
+      course.nombre.toLowerCase().includes(lowerSearchTerm) ||
+      course.descripcion.toLowerCase().includes(lowerSearchTerm) ||
+      course.fechaInicio.toLowerCase().includes(lowerSearchTerm) ||
+      course.fechaFinalizacion.toLowerCase().includes(lowerSearchTerm) ||
+      course.profesor!.toLowerCase().includes(lowerSearchTerm)
     );
   });
 
@@ -56,31 +63,35 @@ const CoursesList: React.FC<Props> = ({ courses, role }) => {
         />
         <div>
           {role === 'admin' ? (
-            <button
-              onClick={handleChangeModalEditView}
-              className="text-gray-700 px-4 py-2 text-sm bg-gray-700 hover:bg-gray-500 text-white font-medium rounded-md"
-              role="menuitem"
-              tabIndex={-1}
-              id="menu-item-1"
-            >
+            <button onClick={handleChangeModalEditView} className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500" role="menuitem" tabIndex={-1} id="menu-item-1">
               Crear nuevo
             </button>
           ) : (
             <></>
           )}
         </div>
+        {selected && (
+          <select className="border-2 border-gray-500 rounded-lg p-2 ml-4" onChange={(e) => setSelectedCategory(selected.find((category) => category.id.toString() === e.target.value))}>
+            <option value="">Todas las categorías</option>
+            {selected.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.nombre}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
       <CourseModalEdit openModalEditView={openModalEditView} onChange={handleChangeModalEditView} setOpenModalEditView={setOpenModalEditView}></CourseModalEdit>
       <div className="flex flex-wrap justify-center items-center">
-        {filteredCourses.map((course) => (
-          <div key={course.id} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">
+        {filteredCourses.map((course, index) => (
+          <div key={index} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">
             <div className="flex justify-between">
-              <h2 className="text-lg font-medium mb-2">{course.name}</h2>
-              <CourseOptions viewCourseModal={course.id} role={role} />
+              <h2 className="text-lg font-medium mb-2">{course.nombre}</h2>
+              <CourseOptions viewIdCourseModal={course.id} role={role} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>
-            <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {course.startDate}</p>
-            <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {course.endDate}</p>
+            <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {course.fechaInicio}</p>
+            <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {course.fechaFinalizacion}</p>
           </div>
         ))}
       </div>

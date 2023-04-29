@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { getCourseById } from '../services/Courses.service';
-import { Course } from "@/app/model/Course.model";
-
+import { Course } from '@/app/model/Course.model';
+import { MyContext } from '../hooks/UseReducer';
 
 interface ChildProps {
   openModalDetailView: boolean;
@@ -14,12 +14,13 @@ interface ChildProps {
 }
 
 export default function CourseModalDetail({ openModalDetailView, onChange, setOpenModalDetailView, viewCourseModal }: ChildProps) {
+  const { state, dispatch } = useContext(MyContext);
   const [filteredCourses, setFilteredCourses] = useState<Course>();
 
   useEffect(() => {
-    const filtered = getCourseById(viewCourseModal!)
+    const filtered = getCourseById(viewCourseModal!, state.courses);
     setFilteredCourses(filtered);
-  }, []);
+  }, [viewCourseModal]);
 
   return (
     <Transition.Root show={openModalDetailView} as={Fragment}>
@@ -63,39 +64,41 @@ export default function CourseModalDetail({ openModalDetailView, onChange, setOp
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       <div className="flex justify-between">
-                        <h2 className="text-lg font-medium mb-2">{filteredCourses?.name}</h2>
+                        <h2 className="text-lg font-medium mb-2">{filteredCourses?.nombre}</h2>
                       </div>
                       <div className="py-1 border-t border-gray-300"></div>
-                      <p className="text-gray-600 mb-2">{filteredCourses?.description}</p>
-                      <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {filteredCourses?.startDate}</p>
-                      <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {filteredCourses?.endDate}</p>
-                      <p className="text-sm text-gray-500">Profesor: {filteredCourses?.professor}</p>
-                      <p className="text-sm text-gray-500 mb-6">Numero de estudiantes: {filteredCourses?.number_of_students.length}</p>
+                      <p className="text-gray-600 mb-2">{filteredCourses?.descripcion}</p>
+                      <p className="text-sm text-gray-500 mb-2">Fecha de inicio: {filteredCourses?.fechaInicio}</p>
+                      <p className="text-sm text-gray-500 mb-2">Fecha de finalización: {filteredCourses?.fechaFinalizacion}</p>
+                      <p className="text-sm text-gray-500">Profesor: {filteredCourses?.profesor}</p>
+                      <p className="text-sm text-gray-500 mb-6">Numero de estudiantes: {filteredCourses?.number_of_students ? filteredCourses?.number_of_students.length : '0'}</p>
                       <div className="py-1 border-t border-gray-300"></div>
                       <p className="font-semibold text-gray-900 m-4">Estudiantes</p>
                       <div className="py-1 border-t border-gray-300"></div>
-                      {filteredCourses?.number_of_students.length !== 0 && (
-                        <>
-                          {filteredCourses?.number_of_students.map((student) => (
-                            <div key={student.cedula}>
-                              <div className="relative mt-8 flex items-center gap-x-4">
-                                <img
-                                  src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                  alt=""
-                                  className="h-10 w-10 rounded-full bg-gray-50"
-                                />
-                                <div className="text-sm leading-6">
-                                  <p className="font-semibold text-gray-900">{student.name}</p>
-                                  <p className="text-gray-600">{student.cedula}</p>
-                                  <p className="text-sm text-gray-500">Email: {student.email}</p>
-                                  <p className="text-sm text-gray-500 mb-2">Teléfono: {student.phone}</p>
-                                  <div className="py-1 border-t border-gray-300"></div>
+                      {filteredCourses?.number_of_students
+                        ? filteredCourses?.number_of_students.length !== 0 && (
+                            <>
+                              {filteredCourses?.number_of_students.map((student) => (
+                                <div key={student.cedula}>
+                                  <div className="relative mt-8 flex items-center gap-x-4">
+                                    <img
+                                      src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                      alt=""
+                                      className="h-10 w-10 rounded-full bg-gray-50"
+                                    />
+                                    <div className="text-sm leading-6">
+                                      <p className="font-semibold text-gray-900">{student.name}</p>
+                                      <p className="text-gray-600">{student.cedula}</p>
+                                      <p className="text-sm text-gray-500">Email: {student.email}</p>
+                                      <p className="text-sm text-gray-500 mb-2">Teléfono: {student.phone}</p>
+                                      <div className="py-1 border-t border-gray-300"></div>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          ))}
-                        </>
-                      )}
+                              ))}
+                            </>
+                          )
+                        : 'No hay estudiantes'}
                     </div>
                   </div>
                 </Dialog.Panel>

@@ -30,6 +30,7 @@ const LoginPage = () => {
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({ email: '', password: '', general: '' });
@@ -46,6 +47,7 @@ const LoginPage = () => {
     }
     setUser({ isAuthenticated: true, ...response });
     router.replace('/pages/Courses');
+
   };
 
   return (
