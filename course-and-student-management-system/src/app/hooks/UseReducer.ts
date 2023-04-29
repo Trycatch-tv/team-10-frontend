@@ -8,7 +8,7 @@ type AppState = {
 };
 
 export type AppAction =
-    | { type: 'SABE_COURSES'; payload: Course[] }
+    | { type: 'SAVE_COURSES'; payload: Course[] }
     | { type: 'ADD_COURSE'; payload: Course }
     | { type: 'REMOVE_COURSE'; payload: number }
     | { type: 'SABE_CATEGORIES'; payload: Cagories[] };
@@ -28,7 +28,7 @@ export const MyContext = createContext<{
 
 export const UseReducer = (state: AppState, action: AppAction): AppState => {
     switch (action.type) {
-        case 'SABE_COURSES':
+        case 'SAVE_COURSES':
             return { courses: action.payload };
         case 'ADD_COURSE':
             return { ...state, courses: [...state.courses, action.payload] };
@@ -37,8 +37,6 @@ export const UseReducer = (state: AppState, action: AppAction): AppState => {
                 ...state,
                 courses: state.courses.filter((course) => course.id !== action.payload),
             };
-        case 'SABE_CATEGORIES':
-            return { courses: state.courses, categories: action.payload };
         default:
             return state;
     }

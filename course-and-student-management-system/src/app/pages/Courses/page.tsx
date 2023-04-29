@@ -20,7 +20,7 @@ const Courses: React.FC = () => {
     }
     getCourse().then((res) => {
       dispatch({
-        type: 'SABE_COURSES',
+        type: 'SAVE_COURSES',
         payload: res.data,
       });
     });
