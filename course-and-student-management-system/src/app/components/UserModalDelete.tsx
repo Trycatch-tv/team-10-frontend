@@ -1,7 +1,7 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { deleteCourse } from '../services/courses.service';
+import { deleteUser } from '../services/User.service';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -10,11 +10,11 @@ interface ChildProps {
   viewCourseModal?: number;
 }
 
-export default function CourseModalDelete({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
+export default function UserModalDelete({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
   const cancelButtonRef = useRef(null);
 
   const handleDeleteCourses = () => {
-    deleteCourse(viewCourseModal!).then((res)=>{ console.log(res)});
+    deleteUser(viewCourseModal!).then((res)=>{ console.log(res)});
     setOpenModalEditView(false);
   };
 
@@ -44,7 +44,7 @@ export default function CourseModalDelete({ openModalEditView, onChange, setOpen
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        Eliminar curso
+                        Eliminar User
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Esta segur@ que desea elimiar</p>
