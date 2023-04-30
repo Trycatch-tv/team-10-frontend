@@ -1,7 +1,7 @@
 export type User = {
   isAuthenticated?: boolean;
   id: number;
-  name: string;
+  username: string;
   cedula: string;
   email: string;
   phone: string;

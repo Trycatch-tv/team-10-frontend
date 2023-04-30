@@ -9,7 +9,7 @@ import { UseReducer, initialState } from './UseReducer';
 const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>({
     id: 0,
-    name: '',
+    username: '',
     cedula: '',
     email: '',
     phone: '',
@@ -19,7 +19,7 @@ const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const cleanUserData = () => {
     setUser({
       id: 0,
-      name: '',
+      username: '',
       cedula: '',
       email: '',
       phone: '',

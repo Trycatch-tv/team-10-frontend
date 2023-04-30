@@ -11,7 +11,7 @@ export const UserContext = createContext<UserContext>({
   user: {
     isAuthenticated: false,
     id: 0,
-    name: '',
+    username: '',
     cedula: '',
     email: '',
     phone: '',

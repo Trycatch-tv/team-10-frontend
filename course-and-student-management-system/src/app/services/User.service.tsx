@@ -1,28 +1,23 @@
-import { studentsArray1 } from "../../../api/hello/route";
+import database from '../../../api/database';
 import { User } from '@/app/model/User.model';
 
-export const getUser = (): User[] => {
-  return studentsArray1;
+
+export const getUser = async () => {
+  return await database.get<User[]>('/users/estudiantes/');
 };
 
-export const getUserById = (id: number): User | undefined => {
-  return studentsArray1.find((user) => user.id === id);
+export const getUserById = (id: number, user: User[]): User | undefined => {
+  return user.find((user) => user.id === id);
 };
 
-export const createUser = (user: User): void => {
-  studentsArray1.push(user);
+export const createUser = async (user: User) => {
+  return await database.post('/users/estudiantes/', user);
 };
 
-export const updateUser = (id: number, updatedCourse: User): void => {
-  const index = studentsArray1.findIndex((user) => user.id === id);
-  if (index !== -1) {
-    studentsArray1[index] = updatedCourse;
-  }
+export const updateUser = async (id: number, user: User): Promise<void> => {
+  return await database.patch('/users/estudiantes/', user);
 };
 
-export const deleteUser = (id: number): void => {
-  const index = studentsArray1.findIndex((user) => user.id === id);
-  if (index !== -1) {
-    studentsArray1.splice(index, 1);
-  }
+export const deleteUser = async (id: number): Promise<void> => {
+  return await database.patch(`/users/estudiantes/${id}`);
 };

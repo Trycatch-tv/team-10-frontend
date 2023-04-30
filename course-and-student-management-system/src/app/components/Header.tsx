@@ -34,6 +34,9 @@ const Header = () => {
               Cursos
             </Link>
 
+            <Link href="/pages/AboutUs" className="text-white hover:text-gray-400">
+              Sobre nosotros
+            </Link>
             {user.role === 'admin' ? (
               <>
                 <Link href="/pages/User" className="text-white hover:text-gray-400">
@@ -43,9 +46,6 @@ const Header = () => {
             ) : (
               <></>
             )}
-            <Link href="/pages/AboutUs" className="text-white hover:text-gray-400">
-              Sobre nosotros
-            </Link>
           </div>
           <div>
             {user.isAuthenticated && (
