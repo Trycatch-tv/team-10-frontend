@@ -190,6 +190,7 @@ const RegisterPage = () => {
             <select id="selectValue" name="rol" onChange={(e) => handleChangeValues(e)} className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 text-black">
               <option value="estudiante">Estudiante</option>
               <option value="profesor">Profesor</option>
+              <option value="admin">Profesor</option>
             </select>
           </div>
           {errors.general && <h2 className="text-red-600 text-lg font-semibold ml-2 self-center">{errors.general}</h2>}
