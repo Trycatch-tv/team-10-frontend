@@ -61,6 +61,8 @@ const RegisterPage = () => {
       setErrors({ ...isExistErrors, rol: inputValues.rol, general: 'Ya existe una cuenta con ese correo' });
       return;
     }
+    res.data.role = res.data.rol;
+    res.data.name = res.data.username;
     setUser({ isAuthenticated: true, ...res.data });
     router.replace('/pages/Courses');
     console.log(res);

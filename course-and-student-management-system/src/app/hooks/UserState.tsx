@@ -6,24 +6,30 @@ import { UserContext } from './UserContex';
 import { MyContextProvider } from './CourseReducer';
 import { UseReducer, initialState } from './UseReducer';
 
-
 const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-
   const [user, setUser] = useState<User>({
     id: 0,
     name: '',
     cedula: '',
     email: '',
     phone: '',
-    role: 'admin',
-    isAuthenticated: true,
+    role: '',
+    isAuthenticated: false,
   });
-
+  const cleanUserData = () => {
+    setUser({
+      id: 0,
+      name: '',
+      cedula: '',
+      email: '',
+      phone: '',
+      role: '',
+      isAuthenticated: false,
+    });
+  };
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <MyContextProvider>
-        {children}
-      </MyContextProvider>
+    <UserContext.Provider value={{ user, setUser, cleanUserData }}>
+      <MyContextProvider>{children}</MyContextProvider>
     </UserContext.Provider>
   );
 };
