@@ -6,6 +6,8 @@ import { AuthLogin } from '@/app/services/Auth.service';
 import { UserContext } from '@/app/hooks/UserContex';
 import { validate } from './validate';
 import { useRouter } from 'next/navigation';
+import { User } from '@/app/model/User.model';
+
 
 interface FormData {
   email: string;
@@ -40,11 +42,21 @@ const LoginPage = () => {
     }
 
     const response: any = await AuthLogin(inputValues);
+    console.log(response);
+    if (response.status !== 200) {
+      setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
+      return;
+    }
+    response.data.role = response.data.rol;
+    response.data.name = response.data.username;
+    setUser({ isAuthenticated: true, ...response.data });
+
     if (response.statusText !== 'OK') {
       setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
       return;
     }
     setUser({ isAuthenticated: true, ...response });
+
     router.replace('/pages/Courses');
   };
 

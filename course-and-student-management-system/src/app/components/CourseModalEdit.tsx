@@ -2,7 +2,7 @@ import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createCourse, getCourseById, updateCourse } from '../services/Courses.service';
+import { createCourse, getCourseById, updateCourse } from '../services/courses.service';
 import { User } from '../model/User.model';
 import { Cagories } from '../model/Categories.model';
 import { getCategory } from '../services/Categoriy.service';

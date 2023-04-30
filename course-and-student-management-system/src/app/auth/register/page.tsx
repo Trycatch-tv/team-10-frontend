@@ -57,6 +57,12 @@ const RegisterPage = () => {
       rol: inputValues.rol,
     };
     const res: any = await AuthRegister(bodyRequest);
+    if (res.status !== 201) {
+      setErrors({ ...isExistErrors, rol: inputValues.rol, general: 'Ya existe una cuenta con ese correo' });
+      return;
+    }
+    res.data.role = res.data.rol;
+    res.data.name = res.data.username;
     if (res.statusText !== 'Created') {
       setErrors({ ...isExistErrors, rol: inputValues.rol, general: 'Ya existe una cuenta con ese correo' });
       return;
