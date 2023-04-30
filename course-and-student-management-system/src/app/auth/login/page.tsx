@@ -42,7 +42,7 @@ const LoginPage = () => {
 
     const response: any = await AuthLogin(inputValues);
     console.log(response);
-    if (response.statusText !== 'OK') {
+    if (response.status !== 200) {
       setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
       return;
     }
