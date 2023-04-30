@@ -14,16 +14,16 @@ const Courses: React.FC = () => {
   const { user, setUser } = useContext(UserContext);
 
   const handleDelete = (id: number) => {
-    console.log(`Deleting user with ID ${id}`)
-  }
+    console.log(`Deleting user with ID ${id}`);
+  };
 
   const handleEdit = (id: number) => {
-    console.log(`Editing user with ID ${id}`)
-  }
+    console.log(`Editing user with ID ${id}`);
+  };
 
   const handleDetail = (id: number) => {
-    console.log(`Showing details for user with ID ${id}`)
-  }
+    console.log(`Showing details for user with ID ${id}`);
+  };
 
   useEffect(() => {
     if (!user.isAuthenticated) {

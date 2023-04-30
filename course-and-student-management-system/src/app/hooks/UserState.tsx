@@ -24,7 +24,7 @@ const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       email: '',
       phone: '',
       role: '',
-      isAuthenticated: false,
+      isAuthenticated: true,
     });
   };
   return (

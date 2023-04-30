@@ -2,11 +2,12 @@ import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createCourse, getCourseById, updateCourse } from '../services/courses.service';
+import { createCourse, getCourse, getCourseById, updateCourse } from '../services/courses.service';
 import { User } from '../model/User.model';
 import { Cagories } from '../model/Categories.model';
 import { getCategory } from '../services/Categoriy.service';
 import { MyContext } from '../hooks/UseReducer';
+import { Course } from '../model/Course.model';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -16,17 +17,17 @@ interface ChildProps {
 }
 
 export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
-  const { state, dispatch } = useContext(MyContext);
-  const [selectedCategory, setSelectedCategory] = useState([0]);
+  const { state, dispatch, GetCourses } = useContext(MyContext);
+  const [selectedCategory, setSelectedCategory] = useState([1]);
   const [category, setcategory] = useState<Cagories[]>([]);
-  const [formDataCourse, setFormDataCourse] = useState({
+  const [formDataCourse, setFormDataCourse] = useState<Course>({
     id: viewCourseModal!,
     nombre: '',
     descripcion: '',
     fechaInicio: '',
     fechaFinalizacion: '',
     profesor: '',
-    categoria: [0],
+    categoria: [],
     number_of_students: [] as User[],
   });
 
@@ -35,6 +36,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
     setFormDataCourse(courseData!);
 
     getCategory().then((res) => {
+      // console.log(res);
       setcategory(res.data);
     });
   }, []);
@@ -44,7 +46,7 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setFormDataCourse({ ...formDataCourse, [name]: value });
-    console.log(formDataCourse, formDataCourse.id);
+    // console.log(formDataCourse, formDataCourse.id);
   };
 
   const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,19 +54,30 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
     const numberValue: number = parseInt(selectedValue, 10);
     setSelectedCategory([numberValue]);
     setFormDataCourse({ ...formDataCourse, categoria: [...selectedCategory] });
+    console.log(formDataCourse);
   };
 
   const handleSubmit = () => {
     if (viewCourseModal) {
       updateCourse(viewCourseModal!, formDataCourse).then((res) => {
         console.log(res);
+        let actualCourses = state.courses.filter((c) => c.id !== res.data.id!);
+        dispatch({ type: 'UPDATE_COURSE', payload: [...actualCourses, res.data] });
       });
     } else {
       createCourse(formDataCourse).then((res) => {
         console.log(res);
+        dispatch({ type: 'ADD_COURSE', payload: res.data });
       });
     }
     setOpenModalEditView(false);
+    GetCourses();
+    getCourse().then((res) => {
+      dispatch({
+        type: 'SAVE_COURSES',
+        payload: res.data,
+      });
+    });
   };
 
   return (
@@ -141,11 +154,13 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                               <select
                                 id="categoria"
                                 name="categoria"
-                                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                                className="block appearance-none w-full bg-white border text-neutral-950 border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
                                 value={selectedCategory[0] && selectedCategory[0]}
                                 onChange={handleChangeCategory}
                               >
-                                <option value="">Seleccione una categoria</option>
+                                <option value="" defaultValue={1} disabled>
+                                  Seleccione una categoria
+                                </option>
                                 {category.map((category) => (
                                   <option key={category.id} value={category.id}>
                                     {category.nombre}

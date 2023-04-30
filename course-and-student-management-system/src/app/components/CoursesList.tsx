@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CoursesList: React.FC<Props> = ({ role }) => {
-  const { state, dispatch } = useContext(MyContext);
+  const { state, dispatch, GetCourses } = useContext(MyContext);
   const [selected, setSelected] = useState<Cagories[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [openModalEditView, setOpenModalEditView] = useState(false);
@@ -33,13 +33,13 @@ const CoursesList: React.FC<Props> = ({ role }) => {
       setSelected(res.data);
     });
   }, [state.courses]);
-  
+
   const filteredCoursesCategory = selectedCategory?.id
-  ? state.courses.filter(course => {
-      return course.categoria[0] === selectedCategory.id;
-    })
-  : state.courses;
-  
+    ? state.courses.filter((course) => {
+        return course.categoria[0] === selectedCategory.id;
+      })
+    : state.courses;
+
   const filteredCourses = filteredCoursesCategory.filter((course) => {
     const lowerSearchTerm = searchTerm.toLowerCase();
     return (
@@ -57,7 +57,7 @@ const CoursesList: React.FC<Props> = ({ role }) => {
         <input
           type="text"
           placeholder="Buscar cursos..."
-          className="flex items-center justify-center sm:justify-start mr-4 p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400 m-2 ml-14"
+          className="flex items-center justify-center sm:justify-start mr-4 p-2 rounded-lg text-neutral-950 border-2 border-gray-500 focus:outline-none focus:border-gray-400 m-2 ml-14"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -71,7 +71,10 @@ const CoursesList: React.FC<Props> = ({ role }) => {
           )}
         </div>
         {selected && (
-          <select className="border-2 border-gray-500 rounded-lg p-2 ml-4" onChange={(e) => setSelectedCategory(selected.find((category) => category.id.toString() === e.target.value))}>
+          <select
+            className="border-2 border-gray-500 rounded-lg p-2 ml-4 text-neutral-950"
+            onChange={(e) => setSelectedCategory(selected.find((category) => category.id.toString() === e.target.value))}
+          >
             <option value="">Todas las categorías</option>
             {selected.map((category) => (
               <option key={category.id} value={category.id}>
@@ -86,7 +89,7 @@ const CoursesList: React.FC<Props> = ({ role }) => {
         {filteredCourses.map((course, index) => (
           <div key={index} className="shadow-md rounded-md p-6 m-2 md:w-1/2 lg:w-1/3">
             <div className="flex justify-between">
-              <h2 className="text-lg font-medium mb-2">{course.nombre}</h2>
+              <h2 className="text-lg font-medium mb-2 text-neutral-950">{course.nombre}</h2>
               <CourseOptions viewIdCourseModal={course.id} role={role} />
             </div>
             <div className="py-1 border-t border-gray-300"></div>

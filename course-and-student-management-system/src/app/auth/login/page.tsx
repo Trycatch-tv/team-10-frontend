@@ -8,7 +8,6 @@ import { validate } from './validate';
 import { useRouter } from 'next/navigation';
 import { User } from '@/app/model/User.model';
 
-
 interface FormData {
   email: string;
   password: string;
@@ -50,13 +49,6 @@ const LoginPage = () => {
     response.data.role = response.data.rol;
     response.data.name = response.data.username;
     setUser({ isAuthenticated: true, ...response.data });
-
-    if (response.statusText !== 'OK') {
-      setErrors({ ...isExistErrors, general: 'erros en tus credenciales,por favor verifica' });
-      return;
-    }
-    setUser({ isAuthenticated: true, ...response });
-
     router.replace('/pages/Courses');
   };
 
