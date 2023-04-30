@@ -15,9 +15,9 @@ const Courses: React.FC = () => {
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    // if (!user.isAuthenticated) {
-    //   router.push('/auth/login');
-    // }
+    if (!user.isAuthenticated) {
+      router.push('/auth/login');
+    }
     getCourse().then((res) => {
       dispatch({
         type: 'SAVE_COURSES',
