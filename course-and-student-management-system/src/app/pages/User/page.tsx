@@ -44,9 +44,8 @@ const Users: React.FC<Props> = () => {
 
   return (
     <div className="p-4 bg-gray-200">
-      <h2>Usuarios</h2>
       <div className=" flex justify-center items-center ">
-        <h3 className="text-xl font-bold mb-4 gap-4 flex justify-center items-center">Total de estudiantes {students ? students.length : 0}</h3>
+        <h3 className="text-xl font-bold mb-4 gap-4 flex justify-center items-center text-neutral-950">Total de estudiantes {students ? students.length : 0}</h3>
         <div className=" m-2 p-4 ">
           {user.role === 'admin' ? (
             <button onClick={handleChangeModalEditView} className="bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500" role="menuitem" tabIndex={-1} id="menu-item-1">
