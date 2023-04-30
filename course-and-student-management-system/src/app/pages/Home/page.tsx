@@ -54,9 +54,6 @@ const Home: React.FC = () => {
 
 export default Home;
 
-
-
-
 // import { useDispatch, useSelector } from 'react-redux';
 // import { setRole } from '../features/auth/authSlice'; // Importa las acciones del slice creado
 

@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+const axiosApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+});
+
 export const AuthLogin = async ({ email, password }: { email: string; password: string }) => {
   try {
     const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/auth/login/', { email: email, password: password });
@@ -27,6 +31,18 @@ export const AuthRegister = async ({ email, password, phone, cedula, rol, userna
     const response = await axios.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/auth/signup/', { email, password, phone, cedula, username, rol });
     return response;
   } catch (error) {
+    console.log('Error en la solicitud:', error);
+    return error;
+  }
+};
+
+export const AuthLogout = async () => {
+  try {
+    const response = await axiosApi.post(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/auth/logout/', {});
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+    return err;
     // console.log('Error en la solicitud:', error);
     return error;
   }
