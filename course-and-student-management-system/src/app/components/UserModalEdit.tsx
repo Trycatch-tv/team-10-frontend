@@ -2,10 +2,8 @@ import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createCourse, getCourseById, updateCourse } from '../services/courses.service';
+import { createUser, getUser, getUserById, updateUser } from '../services/User.service';
 import { User } from '../model/User.model';
-import { Cagories } from '../model/Categories.model';
-import { getCategory } from '../services/Categoriy.service';
 import { MyContext } from '../hooks/UseReducer';
 
 interface ChildProps {
@@ -15,51 +13,39 @@ interface ChildProps {
   viewCourseModal?: number;
 }
 
-export default function CourseModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
+export default function UserModalEdit({ openModalEditView, onChange, setOpenModalEditView, viewCourseModal }: ChildProps) {
   const { state, dispatch } = useContext(MyContext);
-  const [selectedCategory, setSelectedCategory] = useState([0]);
-  const [category, setcategory] = useState<Cagories[]>([]);
-  const [formDataCourse, setFormDataCourse] = useState({
+  const [user, setUser] = useState<User[]>([]);
+  const [formDataUser, setFormDataUser] = useState({
     id: viewCourseModal!,
-    nombre: '',
-    descripcion: '',
-    fechaInicio: '',
-    fechaFinalizacion: '',
-    profesor: '',
-    categoria: [0],
-    number_of_students: [] as User[],
+    username: '',
+    cedula: '',
+    email: '',
+    phone: '',
   });
 
   useEffect(() => {
-    const courseData = getCourseById(viewCourseModal!, state.courses);
-    setFormDataCourse(courseData!);
-
-    getCategory().then((res) => {
-      setcategory(res.data);
-    });
+    getUser().then((res) => {
+      setUser(res.data);
+    })
+    const UserData = getUserById(viewCourseModal!, user);
+    setFormDataUser(UserData!);
   }, []);
 
   const cancelButtonRef = useRef(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setFormDataCourse({ ...formDataCourse, [name]: value });
-  };
-
-  const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue: string = event.target.value;
-    const numberValue: number = parseInt(selectedValue, 10);
-    setSelectedCategory([numberValue]);
-    setFormDataCourse({ ...formDataCourse, categoria: [...selectedCategory] });
+    setFormDataUser({ ...formDataUser, [name]: value });
   };
 
   const handleSubmit = () => {
     if (viewCourseModal) {
-      updateCourse(viewCourseModal!, formDataCourse).then((res) => {
+      updateUser(viewCourseModal!, formDataUser).then((res) => {
         console.log(res);
       });
     } else {
-      createCourse(formDataCourse).then((res) => {
+      createUser(formDataUser).then((res) => {
         console.log(res);
       });
     }
@@ -92,80 +78,62 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        Editar Curso
+                        User
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="mt-1 text-sm leading-6 text-gray-600">Aqui pudes crear nuevos cursos llena la informacion</p>
+                        <p className="mt-1 text-sm leading-6 text-gray-600">Aqui pudes crear o editar usuarios llena la informacion</p>
 
                         <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                           <div className="sm:col-span-4">
                             <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Nombre del curso
+                              Nombres y Apellidos
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="text"
-                                  name="nombre"
-                                  id="nombre"
-                                  autoComplete="nombre"
+                                  name="username"
+                                  id="username"
+                                  autoComplete="username"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.nombre}
+                                  value={formDataUser && formDataUser.username}
                                   onChange={handleChange}
                                 />
                               </div>
                             </div>
                           </div>
-
-                          <div className="col-span-full">
-                            <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                              Descripcion
-                            </label>
-                            <div className="mt-2">
-                              <textarea
-                                id="descripcion"
-                                name="descripcion"
-                                rows={3}
-                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                value={formDataCourse && formDataCourse.descripcion}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-full">
-                            <label htmlFor="categoria" className="block text-sm font-medium leading-6 text-gray-700">
-                              categoria
-                            </label>
-                            <div className="mt-1 relative">
-                              <select
-                                id="categoria"
-                                name="categoria"
-                                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
-                                value={selectedCategory[0] && selectedCategory[0]}
-                                onChange={handleChangeCategory}
-                              >
-                                <option value="">Seleccione una categoria</option>
-                                {category.map((category) => (
-                                  <option key={category.id} value={category.id}>
-                                    {category.nombre}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
                           <div className="sm:col-span-4">
                             <label htmlFor="startDate" className="block text-sm font-medium leading-6 text-gray-900">
-                              Fecha inicio
+                              Cedula
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
-                                  type="date"
-                                  name="fechaInicio"
-                                  id="fechaInicio"
-                                  autoComplete="fechaInicio"
+                                  type="text"
+                                  name="cedula"
+                                  id="cedula"
+                                  autoComplete="cedula"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.fechaInicio}
+                                  value={formDataUser && formDataUser.cedula}
+                                  min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
+                                  onChange={handleChange}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="sm:col-span-4">
+                            <label htmlFor="startDate" className="block text-sm font-medium leading-6 text-gray-900">
+                              Email
+                            </label>
+                            <div className="mt-2">
+                              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                <input
+                                  type="text"
+                                  name="email"
+                                  id="email"
+                                  autoComplete="email"
+                                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                  value={formDataUser && formDataUser.email}
                                   min={new Date().toISOString().split('T')[0]} // Establecer la fecha mínima como la fecha actual
                                   onChange={handleChange}
                                 />
@@ -175,37 +143,18 @@ export default function CourseModalEdit({ openModalEditView, onChange, setOpenMo
 
                           <div className="sm:col-span-4">
                             <label htmlFor="endDate" className="block text-sm font-medium leading-6 text-gray-900">
-                              Fecha finalización
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input
-                                  type="date"
-                                  name="fechaFinalizacion"
-                                  id="fechaFinalizacion"
-                                  autoComplete="fechaFinalizacion"
-                                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.fechaFinalizacion}
-                                  min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
-                                  onChange={handleChange}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="sm:col-span-4">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                              Profesor
+                              Celular
                             </label>
                             <div className="mt-2">
                               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                   type="text"
-                                  name="profesor"
-                                  id="profesor"
-                                  autoComplete="profesor"
+                                  name="phone"
+                                  id="phone"
+                                  autoComplete="phone"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.profesor}
+                                  value={formDataUser && formDataUser.phone}
+                                  min={new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // Establecer la fecha mínima como un mes después de la fecha actual
                                   onChange={handleChange}
                                 />
                               </div>

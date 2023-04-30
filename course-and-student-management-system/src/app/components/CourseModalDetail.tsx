@@ -87,7 +87,7 @@ export default function CourseModalDetail({ openModalDetailView, onChange, setOp
                                       className="h-10 w-10 rounded-full bg-gray-50"
                                     />
                                     <div className="text-sm leading-6">
-                                      <p className="font-semibold text-gray-900">{student.name}</p>
+                                      <p className="font-semibold text-gray-900">{student.username}</p>
                                       <p className="text-gray-600">{student.cedula}</p>
                                       <p className="text-sm text-gray-500">Email: {student.email}</p>
                                       <p className="text-sm text-gray-500 mb-2">Teléfono: {student.phone}</p>
