@@ -25,10 +25,12 @@ export const validate = ({ email, password, document, general, name, phone, repe
     flag = true;
     errors = { ...errors, password: 'Ingrese su contraseña' };
   }
+
   if (password.length < 8) {
     flag = true;
     errors = { ...errors, password: 'La contraseña debe ser mayor a 8 caracteres' };
   }
+
   if (!document) {
     flag = true;
     errors = { ...errors, document: 'Ingrese su numero de cedula' };

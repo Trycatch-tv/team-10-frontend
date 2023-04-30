@@ -43,5 +43,7 @@ export const AuthLogout = async () => {
   } catch (err) {
     console.log(err);
     return err;
+    // console.log('Error en la solicitud:', error);
+    return error;
   }
 };

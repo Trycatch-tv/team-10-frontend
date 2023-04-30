@@ -47,6 +47,9 @@ const Header = () => {
             ) : (
               <></>
             )}
+            <Link href="/pages/AboutUs" className="text-white hover:text-gray-400">
+              Sobre nosotros
+            </Link>
           </div>
           <div>
             {user.isAuthenticated && (
