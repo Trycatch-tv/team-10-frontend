@@ -9,11 +9,7 @@ import { getUser } from '@/app/services/User.service';
 import UserModalEdit from '@/app/components/UserModalEdit';
 import UserModalDelete from '@/app/components/UserModalDelete';
 
-type Props = {
-  role: string;
-};
-
-const Users: React.FC<Props> = () => {
+const Users: React.FC = () => {
   const router = useRouter();
   const [students, setStudents] = useState<User[]>([]);
   const { user, setUser } = useContext(UserContext);

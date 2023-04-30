@@ -1,9 +1,10 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-import { createUser, getUserById, updateUser } from '../services/User.service';
+import { createUser, getUser, getUserById, updateUser } from '../services/User.service';
 import { User } from '../model/User.model';
+import { MyContext } from '../hooks/UseReducer';
 
 interface ChildProps {
   openModalEditView: boolean;
@@ -13,16 +14,18 @@ interface ChildProps {
 }
 
 export default function HomeModalEdit({ openModalEditView, onChange, setOpenModalEditView, idUserModal }: ChildProps) {
+  const [users, setUsers] = useState<User[]>([]);
   const [formDataCourse, setFormDataCourse] = useState<User>({
     id: idUserModal!,
-    name: '',
+    username: '',
     cedula: '',
     email: '',
     phone: '',
   });
 
   useEffect(() => {
-    const courseData = getUserById(idUserModal!);
+    getUser().then(res => setUsers(res.data))
+    const courseData = getUserById(idUserModal!, users);
     setFormDataCourse(courseData!);
   }, []);
 
@@ -86,7 +89,7 @@ export default function HomeModalEdit({ openModalEditView, onChange, setOpenModa
                                   id="name"
                                   autoComplete="name"
                                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                  value={formDataCourse && formDataCourse.name}
+                                  value={formDataCourse && formDataCourse.username}
                                   onChange={handleChange}
                                 />
                               </div>

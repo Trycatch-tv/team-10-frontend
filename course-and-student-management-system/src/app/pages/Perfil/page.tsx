@@ -30,7 +30,7 @@ const Perfil: React.FC = () => {
     if (!user.isAuthenticated) {
       router.push('/auth/login');
     }
-    const studentsData = getUserById(1);
+    const studentsData = user;
     setStudents(studentsData!);
   }, []);
 
@@ -40,13 +40,13 @@ const Perfil: React.FC = () => {
         <div className="flex flex-wrap max-w-3xl mx-4 bg-white shadow-md rounded-lg">
           <div className="flex justify-center items-center m-4">
             <div className="w-40 h-40 rounded-full bg-gray-500 grid place-content-center">
-              <h1 className="text-neutral-200 text-4xl">{user.name && formatName(user.name)}</h1>
+              <h1 className="text-neutral-200 text-4xl">{user.username && formatName(user.username)}</h1>
             </div>
           </div>
           <div className="flex-1 flex-wrap p-8">
             <div className="mb-6">
               <h2 className="text-3xl font-bold mb-2">Información Personal</h2>
-              <p className="text-gray-500">Nombre: {user?.name ? user?.name : ''}</p>
+              <p className="text-gray-500">Nombre: {user?.username ? user?.username : ''}</p>
               <p className="text-gray-500">Cédula: {user?.cedula}</p>
               <p className="text-gray-500">Email: {user?.email}</p>
               <p className="text-gray-500">Teléfono: {user?.phone}</p>
