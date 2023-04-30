@@ -1,6 +1,20 @@
+'use client';
+
+import { useContext, useEffect } from 'react';
 import Link from 'next/link';
+import { UserContext } from '@/app/hooks/UserContex';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!user.isAuthenticated) {
+      router.push('/auth/login');
+    }
+  }, []);
+
   return (
     <>
       <header className="bg-gray-800 text-white">
@@ -14,6 +28,15 @@ const Header = () => {
             <Link href="/pages/Courses" className="text-white hover:text-gray-400">
               Cursos
             </Link>
+            {user.role === 'admin' ? (
+              <>
+                <Link href="/pages/User" className="text-white hover:text-gray-400">
+                  Usuarios
+                </Link>
+              </>
+            ) : (
+              <></>
+            )}
             <Link href="/pages/AboutUs" className="text-white hover:text-gray-400">
               Sobre nosotros
             </Link>
