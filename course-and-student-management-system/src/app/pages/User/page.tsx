@@ -39,7 +39,7 @@ const Users: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4 bg-gray-200">
+    <div className="p-4 bg-gray-200 min-h-[95vh]">
       <div className=" flex justify-center items-center ">
         <h3 className="text-xl font-bold mb-4 gap-4 flex justify-center items-center text-neutral-950">Total de estudiantes {students ? students.length : 0}</h3>
         <div className=" m-2 p-4 ">
