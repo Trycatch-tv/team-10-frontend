@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { UserContext } from '@/app/hooks/UserContex';
 import { useRouter } from 'next/navigation';
 import { AuthLogout } from '../services/Auth.service';
+import FaviconIcon from '../favicon.ico';
 
 const Header = () => {
   const router = useRouter();
@@ -24,9 +25,9 @@ const Header = () => {
     <>
       <header className="bg-gray-800 text-white">
         <div className="container flex justify-between items-center p-5">
-          <div className="flex items-center justify-center sm:justify-start mr-4">Logo</div>
+          <img alt="logo" src={FaviconIcon.src} className="w-12 aspect-auto mr-3 " />
           <div className="flex flex-1 items-center justify-center sm:justify-start space-x-4">
-            <input type="text" placeholder="Buscar..." className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400" />
+            {/* <input type="text" placeholder="Buscar..." className="p-2 rounded-lg border-2 border-gray-500 focus:outline-none focus:border-gray-400" /> */}
             <Link href="/" className="text-white hover:text-gray-400">
               Inicio
             </Link>

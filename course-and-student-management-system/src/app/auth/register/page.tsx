@@ -5,6 +5,7 @@ import { AuthRegister } from '@/app/services/Auth.service';
 import { validate } from './validate';
 import { UserContext } from '@/app/hooks/UserContex';
 import { useRouter } from 'next/navigation';
+import FaviconIcon from '../../favicon.ico';
 
 interface FormData {
   name: string;
@@ -81,7 +82,8 @@ const RegisterPage = () => {
         className="aspect-auto w-3/5 h-screen hidden sm:block min-w-3/5"
       />
       <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full overflow-scroll">
-        <h1 className="text-black">Logo</h1>
+        <img alt="logo" src={FaviconIcon.src} className="w-16 aspect-auto" />
+
         <form className="flex flex-col justify-start text-black  w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col">
             <label htmlFor="input-nombre">Tu nombre:</label>

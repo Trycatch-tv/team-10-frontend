@@ -7,7 +7,7 @@ import { UserContext } from '@/app/hooks/UserContex';
 import { validate } from './validate';
 import { useRouter } from 'next/navigation';
 import { User } from '@/app/model/User.model';
-
+import FaviconIcon from '../../favicon.ico';
 interface FormData {
   email: string;
   password: string;
@@ -60,7 +60,7 @@ const LoginPage = () => {
         className="aspect-auto w-3/5 h-screen hidden sm:block min-w-3/5"
       />
       <div className="flex flex-col justify-center items-center w-full bg-neutral-100 h-full">
-        <h1 className="text-black">Logo</h1>
+        <img alt="logo" src={FaviconIcon.src} className="w-16 aspect-auto" />
         <form className="flex flex-col justify-start text-black gap-6 w-1/2 my-5" onSubmit={(e) => handleSubmit(e)}>
           <div className="flex flex-col">
             <label htmlFor="input-correo">Correo:</label>
